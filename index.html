@@ -1,0 +1,2304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>This Is Me Properties Phase 1 — Ruppell</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --bg-card: #111111;
+      --bg-card-2: #161616;
+      --blue: #3b82f6;
+      --blue-dim: rgba(59,130,246,0.12);
+      --blue-glow: rgba(59,130,246,0.35);
+      --white: #ffffff;
+      --grey: #9ca3af;
+      --grey-dim: #374151;
+      --border: rgba(255,255,255,0.07);
+      --border-blue: rgba(59,130,246,0.4);
+      --amber: #fbbf24;
+      --green: #4ade80;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    [hidden] { display: none !important; }
+    :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 6px; }
+
+    /* ── Utilities ── */
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    @media (max-width: 480px) { .container { padding: 0 16px; } }
+    .section { padding: 96px 0; }
+    @media (max-width: 600px) { .section { padding: 72px 0; } }
+
+    .label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--white);
+    }
+    .section-title .accent { color: var(--blue); }
+
+    .section-subtitle {
+      font-size: 17px;
+      color: var(--grey);
+      max-width: 660px;
+      margin-top: 16px;
+    }
+
+    .alt-bg { background: var(--bg-card-2); }
+    section[id] { scroll-margin-top: 76px; }
+
+    /* ── Fade-in animation ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.3s; }
+    .fade-in-delay-4 { transition-delay: 0.4s; }
+
+    @keyframes swapIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .anim { animation: swapIn 0.32s ease; }
+
+    .divider { height: 1px; background: var(--border); margin: 0; }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { background: #2563eb; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(59,130,246,0.4); }
+    .btn-ghost { background: transparent; color: var(--white); border: 1px solid var(--border-blue); }
+    .btn-ghost:hover { background: var(--blue-dim); transform: translateY(-1px); }
+
+    .mini-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      background: transparent;
+      border: 1px solid var(--border-blue);
+      border-radius: 8px;
+      color: var(--white);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+    }
+    .mini-btn:hover:not(:disabled) { background: var(--blue-dim); }
+    .mini-btn:disabled { opacity: 0.3; cursor: default; }
+    .mini-btn.solid { background: var(--blue); border-color: var(--blue); }
+    .mini-btn.solid:hover:not(:disabled) { background: #2563eb; }
+
+    /* ══════════════════════════
+       SCROLL PROGRESS + NAV
+    ══════════════════════════ */
+    .progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--blue);
+      transform: scaleX(0);
+      transform-origin: 0 50%;
+      z-index: 101;
+      pointer-events: none;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-links { display: flex; gap: 26px; list-style: none; }
+    .nav-links a { color: var(--grey); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--white); }
+    @media (max-width: 920px) { .nav-links { display: none; } }
+    .nav-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .nav-logo img.wordmark { height: 30px; }
+    .nav-phase {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--grey);
+      padding-left: 12px;
+      margin-left: 4px;
+      border-left: 1px solid var(--border);
+    }
+
+    /* ══════════════════════════
+       HERO
+    ══════════════════════════ */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 88px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 60% 40%, rgba(59,130,246,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 10% 80%, rgba(59,130,246,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 840px; }
+    .hero-meta { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; }
+    .hero-meta-item { font-size: 13px; color: var(--grey); }
+    .hero-meta-sep { width: 4px; height: 4px; border-radius: 50%; background: var(--grey-dim); }
+    .hero-headline {
+      font-size: clamp(36px, 6vw, 68px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 24px;
+    }
+    .hero-headline .accent { color: var(--blue); }
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 19px);
+      color: var(--grey);
+      max-width: 640px;
+      line-height: 1.65;
+      margin-bottom: 40px;
+    }
+    .hero-stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+    .hero-stat {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 20px;
+      min-width: 140px;
+    }
+    .hero-stat-value { font-size: 22px; font-weight: 800; line-height: 1.2; }
+    .hero-stat-value .unit { font-size: 13px; font-weight: 600; color: var(--grey); margin-left: 3px; }
+    .hero-stat-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-top: 4px;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+
+    .hero-lockup {
+      display: inline-flex;
+      align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .hero-lockup-side { padding: 18px 24px; display: flex; flex-direction: column; gap: 8px; }
+    .hero-lockup-from { border-right: 1px solid var(--border); }
+    .lockup-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); }
+    .hero-lockup-arrow { padding: 0 16px; color: var(--grey-dim); font-size: 20px; line-height: 1; }
+    @media (max-width: 640px) {
+      .hero-lockup { flex-direction: column; align-items: stretch; }
+      .hero-lockup-from { border-right: none; border-bottom: 1px solid var(--border); }
+      .hero-lockup-arrow { display: none; }
+    }
+
+    .client-wordmark {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .client-wordmark .accent, .client-wordmark-sm .accent { color: var(--blue); }
+    .client-wordmark-sm {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      line-height: 1;
+      opacity: 0.85;
+      white-space: nowrap;
+    }
+    @media (max-width: 420px) { .client-wordmark { font-size: 18px; letter-spacing: 0.08em; } }
+
+    /* ══════════════════════════
+       CARDS + CALLOUTS
+    ══════════════════════════ */
+    .brief-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+      margin-top: 48px;
+    }
+    .brief-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 26px 24px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .brief-card:hover { border-color: var(--border-blue); transform: translateY(-2px); }
+    .brief-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--blue-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      color: var(--blue);
+    }
+    .brief-card h3 { font-size: 15px; font-weight: 700; line-height: 1.4; margin-bottom: 8px; }
+    .brief-card p { font-size: 13.5px; color: var(--grey); line-height: 1.55; }
+    .brief-card p strong { color: #d1d5db; font-weight: 600; }
+    .brief-card .verify { display: inline-block; margin-top: 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--amber); }
+
+    .brief-confirm {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 32px;
+      padding: 12px 18px;
+      background: rgba(34,197,94,0.08);
+      border: 1px solid rgba(34,197,94,0.3);
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--green);
+    }
+
+    .callout {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-top: 32px;
+      padding: 24px 26px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-blue);
+      border-radius: 12px;
+    }
+    .callout > i, .callout > svg { color: var(--blue); flex-shrink: 0; margin-top: 2px; }
+    .callout strong.h { display: block; color: var(--white); font-size: 15.5px; margin-bottom: 6px; }
+    .callout p { font-size: 14px; color: var(--grey); line-height: 1.65; }
+    .callout p + p { margin-top: 10px; }
+    .callout p strong { color: var(--white); font-weight: 600; }
+    .callout a { color: #93c5fd; }
+    .callout.warn { border-color: rgba(245,158,11,0.4); background: linear-gradient(135deg, rgba(245,158,11,0.06), var(--bg-card) 60%); }
+    .callout.warn > i, .callout.warn > svg { color: var(--amber); }
+    @media (max-width: 520px) { .callout { flex-direction: column; gap: 10px; padding: 20px; } }
+
+    .done-when {
+      margin-top: 20px;
+      border: 1px solid rgba(34,197,94,0.3);
+      background: rgba(34,197,94,0.06);
+      border-radius: 12px;
+      padding: 20px 22px;
+    }
+    .done-when .px-sub { color: var(--green); display: flex; align-items: center; gap: 7px; }
+    .done-when p { font-size: 15px; color: #e5e7eb; line-height: 1.6; }
+
+    /* ══════════════════════════
+       ARCHITECTURE
+    ══════════════════════════ */
+    .ws-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 44px;
+    }
+    .ws-folder {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .ws-folder.home { border-color: var(--border-blue); background: linear-gradient(180deg, rgba(59,130,246,0.07), var(--bg-card) 110px); }
+    .ws-folder.sys { border-style: dashed; border-color: rgba(255,255,255,0.12); }
+    .ws-folder-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 12px;
+    }
+    .ws-folder-head svg, .ws-folder-head i { color: var(--blue); }
+    .ws-board {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      width: 100%;
+      padding: 10px 12px;
+      margin-top: 8px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--white);
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .ws-board:hover { border-color: var(--border-blue); background: var(--blue-dim); }
+    .ws-board .em { font-size: 17px; line-height: 1.3; }
+    .ws-board strong { display: block; font-size: 14px; font-weight: 700; line-height: 1.3; }
+    .ws-board small { display: block; font-size: 12px; color: var(--grey); line-height: 1.4; margin-top: 2px; }
+    .ws-board.static { cursor: default; }
+    .ws-board.static:hover { border-color: var(--border); background: rgba(255,255,255,0.02); }
+
+    .arch-head { margin-top: 64px; }
+    .arch-wrap {
+      margin-top: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      overflow-x: auto;
+    }
+    .arch-wrap svg { display: block; width: 100%; min-width: 760px; height: auto; }
+    .arch-wrap .scroll-hint { display: none; font-size: 12px; color: var(--grey); margin-bottom: 10px; }
+    @media (max-width: 800px) { .arch-wrap .scroll-hint { display: flex; align-items: center; gap: 6px; } }
+
+    .a-node rect { fill: #0d1420; stroke: var(--border-blue); stroke-width: 1.2; }
+    .a-node.core rect { fill: #0f1a2e; stroke: var(--blue); stroke-width: 1.5; }
+    .a-node.inbox rect { fill: #111111; stroke: rgba(255,255,255,0.25); }
+    .a-node { cursor: pointer; }
+    .a-node:hover rect { stroke: #93c5fd; }
+    .a-node:focus-visible { outline: none; }
+    .a-node:focus-visible rect { stroke: #fff; stroke-width: 2; }
+    .a-title { fill: #fff; font-size: 15px; font-weight: 800; }
+    .a-sub { fill: var(--grey); font-size: 11.5px; }
+    .a-item { fill: #cbd5e1; font-size: 11.5px; }
+    .a-line { stroke: var(--blue); stroke-width: 1.6; fill: none; }
+    .a-line.dash { stroke: rgba(255,255,255,0.35); stroke-dasharray: 5 5; }
+    .a-lbl { fill: var(--grey); font-size: 11px; font-weight: 600; }
+    .a-lbl.strong { fill: #93c5fd; }
+
+    .see-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .see-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+    .see-card .k { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); }
+    .see-card h4 { font-size: 16px; font-weight: 800; margin: 2px 0 8px; }
+    .see-card p { font-size: 13.5px; color: var(--grey); line-height: 1.55; }
+
+    .journeys {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+    @media (max-width: 860px) { .journeys { grid-template-columns: 1fr; } }
+    .journey {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .journey .j-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .journey .j-icon {
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      background: var(--blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .journey h4 { font-size: 16px; font-weight: 800; }
+    .journey dl { display: grid; grid-template-columns: 64px 1fr; gap: 6px 10px; font-size: 13.5px; }
+    .journey dt { color: var(--grey); font-weight: 600; }
+    .journey dd { color: #d1d5db; }
+
+    /* ══════════════════════════
+       BOARD EXPLORER (phase-explorer pattern)
+    ══════════════════════════ */
+    .px {
+      display: grid;
+      grid-template-columns: 270px minmax(0, 1fr);
+      gap: 20px;
+      margin-top: 44px;
+      align-items: start;
+      scroll-margin-top: 92px;
+    }
+    @media (max-width: 960px) { .px { grid-template-columns: minmax(0, 1fr); } }
+    .px-list { display: flex; flex-direction: column; gap: 8px; position: sticky; top: 92px; }
+    @media (max-width: 960px) {
+      .px-list { position: static; flex-direction: row; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x proximity; }
+      .px-tab { flex: 0 0 210px; scroll-snap-align: start; }
+    }
+    .px-tab {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--white);
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .px-tab:hover { border-color: var(--border-blue); }
+    .px-tab[aria-selected="true"] { border-color: var(--blue); background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(59,130,246,0.04)); }
+    .px-num {
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      background: var(--blue-dim);
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .px-tab[aria-selected="true"] .px-num { background: var(--blue); }
+    .px-tab strong { display: block; font-size: 14px; font-weight: 700; line-height: 1.3; }
+    .px-tab small { display: block; font-size: 12px; color: var(--grey); margin-top: 2px; }
+
+    .px-panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .px-head { padding: 28px 28px 24px; border-bottom: 1px solid var(--border); background: linear-gradient(180deg, rgba(59,130,246,0.07), transparent); }
+    .px-head-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+    .px-head h3 { font-size: clamp(22px, 2.6vw, 28px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; }
+    .px-obj { font-size: 15.5px; color: var(--grey); margin-top: 10px; line-height: 1.6; max-width: 660px; }
+    .px-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+    .px-meta div { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px 16px; }
+    .px-meta b { display: block; font-size: 15px; font-weight: 800; letter-spacing: -0.01em; }
+    .px-meta span { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); }
+    .px-body { padding: 24px 28px 28px; }
+    @media (max-width: 600px) { .px-head { padding: 22px 20px 20px; } .px-body { padding: 20px; } }
+    .px-sub { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 12px; }
+
+    .px-scope { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+    @media (max-width: 700px) { .px-scope { grid-template-columns: 1fr; } }
+    .px-block { border: 1px solid var(--border); border-radius: 12px; padding: 18px; background: rgba(255,255,255,0.015); min-width: 0; }
+    .px-block.wide { grid-column: 1 / -1; }
+    .px-block h4 { display: flex; align-items: center; gap: 10px; font-size: 14.5px; font-weight: 700; margin-bottom: 12px; }
+    .px-block h4 svg, .px-block h4 i { color: var(--blue); }
+    .px-block > p { font-size: 13.5px; color: var(--grey); line-height: 1.6; }
+
+    .fn-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .fn-list li { font-size: 13.5px; color: var(--grey); line-height: 1.55; padding-left: 16px; position: relative; }
+    .fn-list li::before { content: ''; position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--blue); }
+    .fn-list li strong { color: #e5e7eb; font-weight: 600; }
+
+    .grp-list { list-style: none; display: flex; flex-direction: column; gap: 7px; counter-reset: g; }
+    .grp-list li { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: #d1d5db; }
+    .grp-list li .gdot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+    .col-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px 20px; }
+    .col-groups h5 { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #93c5fd; margin-bottom: 6px; }
+    .col-groups p { font-size: 13px; color: var(--grey); line-height: 1.6; }
+
+    /* status rows */
+    .st-block { border: 1px solid var(--border); border-radius: 12px; padding: 18px; background: rgba(255,255,255,0.015); }
+    .st-block + .st-block { margin-top: 12px; }
+    .st-block.main { border-color: var(--border-blue); background: rgba(59,130,246,0.04); }
+    .st-title { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+    .st-title h4 { font-size: 15px; font-weight: 800; }
+    .st-title .assume { font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--amber); }
+    .st-note { font-size: 13px; color: var(--grey); margin-bottom: 14px; }
+    .st-rows { list-style: none; display: flex; flex-direction: column; }
+    .st-row {
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 9px 0;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .st-row:first-child { border-top: none; }
+    @media (max-width: 640px) { .st-row { grid-template-columns: 1fr; gap: 6px; } }
+    .st-row p { font-size: 13.5px; color: #d1d5db; line-height: 1.55; }
+    .st-row .auto {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 6px;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #93c5fd;
+      white-space: nowrap;
+    }
+    .st-row .grp { display: block; font-size: 12px; color: var(--grey); margin-top: 2px; }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 28px;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.25;
+      color: #fff;
+      text-align: center;
+      max-width: 100%;
+    }
+    .chip.dark { color: #1f2937; }
+    .chip.outline { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.28); }
+    .st-row .chip { width: 100%; }
+    @media (max-width: 640px) { .st-row .chip { width: auto; justify-self: start; } }
+
+    .chip-set { margin-top: 14px; }
+    .chip-set .cs-head { font-size: 13px; font-weight: 700; color: #e5e7eb; margin-bottom: 8px; }
+    .chip-set .cs-head span { font-weight: 500; color: var(--grey); }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip-row .chip { min-height: 24px; font-size: 12px; padding: 3px 10px; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      display: inline-block;
+      padding: 3px 9px;
+      font-size: 12px;
+      color: #d1d5db;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 5px;
+    }
+
+    .px-warn {
+      display: grid;
+      grid-template-columns: 20px 1fr;
+      gap: 12px;
+      margin-top: 12px;
+      padding: 16px 18px;
+      border: 1px solid rgba(245,158,11,0.3);
+      background: rgba(245,158,11,0.06);
+      border-radius: 12px;
+      font-size: 13.5px;
+      color: #d1d5db;
+      line-height: 1.6;
+    }
+    .px-warn svg, .px-warn i { color: var(--amber); margin-top: 2px; }
+    .px-warn strong { color: var(--amber); font-weight: 700; }
+
+    .px-nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 28px;
+      border-top: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+    @media (max-width: 600px) { .px-nav { padding: 14px 20px; } }
+
+    .widget-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+    .widget { border: 1px solid var(--border); border-radius: 10px; padding: 14px; background: var(--bg); }
+    .widget .w-type { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); display: flex; align-items: center; gap: 6px; }
+    .widget strong { display: block; font-size: 14px; margin-top: 6px; line-height: 1.35; }
+    .widget p { font-size: 12.5px; color: var(--grey); margin-top: 4px; line-height: 1.5; }
+
+    .routine { list-style: none; counter-reset: r; display: flex; flex-direction: column; gap: 10px; }
+    .routine li { counter-increment: r; display: grid; grid-template-columns: 26px 1fr; gap: 10px; font-size: 13.5px; color: #d1d5db; line-height: 1.55; }
+    .routine li::before {
+      content: counter(r);
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      background: var(--blue-dim);
+      border: 1px solid var(--border-blue);
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ══════════════════════════
+       WALKTHROUGH (workflow pattern)
+    ══════════════════════════ */
+    .wt-card { margin-top: 44px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .wt-track-wrap { overflow-x: auto; padding: 26px 20px 20px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.015); }
+    .wt-track { display: flex; position: relative; min-width: max-content; }
+    .wt-step-btn {
+      flex: 1 0 112px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 0 6px;
+      background: none;
+      border: none;
+      font: inherit;
+      color: var(--grey);
+      cursor: pointer;
+    }
+    .wt-step-btn::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      right: 50%;
+      width: 100%;
+      height: 2px;
+      background: var(--grey-dim);
+      transition: background 0.3s;
+    }
+    .wt-step-btn:first-child::before { display: none; }
+    .wt-step-btn.done::before, .wt-step-btn.active::before { background: var(--blue); }
+    .wt-dot {
+      position: relative;
+      z-index: 1;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--grey-dim);
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--grey);
+      transition: all 0.25s ease;
+    }
+    .wt-step-btn:hover .wt-dot { border-color: var(--border-blue); color: var(--white); }
+    .wt-step-btn.done .wt-dot { border-color: var(--blue); color: var(--blue); }
+    .wt-step-btn.active .wt-dot { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 0 0 6px var(--blue-dim); }
+    .wt-label { font-size: 12px; font-weight: 600; line-height: 1.35; text-align: center; max-width: 118px; }
+    .wt-step-btn.active .wt-label { color: var(--white); }
+    .wt-body { padding: 28px; }
+    .wt-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
+    .wt-count { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); }
+    .wt-head h3 { font-size: clamp(19px, 2.4vw, 23px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.25; }
+    .wt-cols { display: grid; grid-template-columns: 1fr 1.35fr; gap: 16px; }
+    @media (max-width: 760px) { .wt-cols { grid-template-columns: 1fr; } .wt-body { padding: 22px 20px; } }
+    .wt-col { border: 1px solid var(--border); border-radius: 12px; padding: 20px; background: rgba(255,255,255,0.02); }
+    .wt-col.sys { border-color: var(--border-blue); background: rgba(59,130,246,0.05); }
+    .wt-col-label { display: flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+    .wt-col.team .wt-col-label { color: var(--green); }
+    .wt-col.sys .wt-col-label { color: var(--blue); }
+    .wt-col p { font-size: 15px; color: #d1d5db; line-height: 1.6; }
+    .wt-sys { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+    .wt-sys li { font-size: 14px; color: #d1d5db; line-height: 1.5; padding-left: 18px; position: relative; }
+    .wt-sys li::before { content: ''; position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--blue); }
+    .wt-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+    .wt-boards { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; font-size: 12.5px; color: var(--grey); }
+    .wt-btns { display: flex; gap: 8px; }
+
+    .bd-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #93c5fd;
+      background: var(--blue-dim);
+      border: 1px solid var(--border-blue);
+      border-radius: 6px;
+      padding: 3px 8px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .bd-tag:hover { background: rgba(59,130,246,0.25); }
+
+    /* ══════════════════════════
+       AUTOMATIONS
+    ══════════════════════════ */
+    .auto-list { margin-top: 44px; display: flex; flex-direction: column; gap: 8px; }
+    .auto-row {
+      display: grid;
+      grid-template-columns: 150px 1fr 24px 1fr;
+      gap: 14px;
+      align-items: center;
+      padding: 14px 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    .auto-row .a-board { font-size: 12.5px; font-weight: 700; color: var(--grey); }
+    .auto-row .a-when, .auto-row .a-then { font-size: 14px; color: #d1d5db; line-height: 1.5; }
+    .auto-row .a-when b, .auto-row .a-then b { color: #fff; font-weight: 600; }
+    .auto-row .a-arrow { color: var(--blue); display: flex; justify-content: center; }
+    .auto-row.cross { border-color: var(--border-blue); }
+    .auto-k { display: none; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); margin-bottom: 2px; }
+    @media (max-width: 760px) {
+      .auto-row { grid-template-columns: 1fr; gap: 6px; }
+      .auto-row .a-arrow { display: none; }
+      .auto-k { display: block; }
+    }
+
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 32px; }
+    @media (max-width: 860px) { .split { grid-template-columns: 1fr; } }
+    .split .callout { margin-top: 0; }
+
+    /* ══════════════════════════
+       FORMS
+    ══════════════════════════ */
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 40px; }
+    .form-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+    .form-card .brief-icon { margin-bottom: 14px; }
+    .form-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .form-card .lands { font-size: 12.5px; font-weight: 600; color: #93c5fd; margin-bottom: 10px; }
+    .form-card p { font-size: 13.5px; color: var(--grey); line-height: 1.55; flex: 1; }
+    .form-card .mini-btn { margin-top: 16px; align-self: flex-start; }
+
+    /* ══════════════════════════
+       SCOPE IN / OUT
+    ══════════════════════════ */
+    .scope-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; }
+    @media (max-width: 860px) { .scope-grid { grid-template-columns: 1fr; } }
+    .scope-col { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 28px; }
+    @media (max-width: 480px) { .scope-col { padding: 22px 18px; } }
+    .scope-col h3 { font-size: 15px; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; gap: 9px; }
+    .scope-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .scope-col li { font-size: 13.5px; color: var(--grey); line-height: 1.6; padding-left: 18px; position: relative; }
+    .scope-col li::before { content: ''; position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--grey-dim); }
+    .scope-col.in li::before { background: var(--blue); }
+    .scope-col.out li::before { background: #f87171; }
+    .scope-col li strong { color: #d1d5db; font-weight: 600; }
+    .ph-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      line-height: 1.4;
+      color: #93c5fd;
+      background: var(--blue-dim);
+      border: 1px solid var(--border-blue);
+      border-radius: 5px;
+      padding: 1px 6px;
+      margin-left: 4px;
+      white-space: nowrap;
+    }
+    .ph-tag.p7 { color: var(--amber); background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.35); }
+
+    /* ══════════════════════════
+       QUESTIONS
+    ══════════════════════════ */
+    .q-progress {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 32px;
+      padding: 14px 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 13.5px;
+      color: var(--grey);
+    }
+    .q-progress b { color: #fff; }
+    .q-bar { flex: 1 1 160px; height: 6px; background: var(--grey-dim); border-radius: 3px; overflow: hidden; }
+    .q-bar span { display: block; height: 100%; width: 0; background: var(--green); transition: width 0.3s ease; }
+    .q-reset { background: none; border: none; color: var(--grey); font: inherit; font-size: 12.5px; text-decoration: underline; cursor: pointer; }
+    .q-reset:hover { color: #fff; }
+
+    .q-theme { margin-top: 40px; }
+    .q-theme-head { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 800; }
+    .q-theme-head svg, .q-theme-head i { color: var(--blue); }
+    .q-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; margin-top: 14px; }
+    @media (max-width: 380px) { .q-grid { grid-template-columns: 1fr; } }
+    .q-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px dashed rgba(255,255,255,0.14);
+      border-radius: 12px;
+      padding: 20px 20px 16px;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .q-card.new { border-color: var(--border-blue); border-style: solid; }
+    .q-card.discussed { border-style: solid; border-color: rgba(34,197,94,0.35); background: linear-gradient(135deg, rgba(34,197,94,0.06), var(--bg-card) 70%); }
+    .q-id { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .q-id code { font-family: inherit; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; color: var(--blue); }
+    .q-flag { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #93c5fd; background: var(--blue-dim); border-radius: 4px; padding: 1px 6px; }
+    .q-card h3 { font-size: 15px; font-weight: 700; line-height: 1.4; margin-bottom: 6px; }
+    .q-card p { font-size: 13.5px; color: var(--grey); line-height: 1.55; }
+    .q-card p.why { margin-top: 8px; font-size: 12.5px; }
+    .q-card p.why b { color: #d1d5db; font-weight: 600; }
+    .q-card .q-body { flex: 1; }
+    .q-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 14px;
+      padding: 7px 12px;
+      align-self: flex-start;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 8px;
+      color: var(--grey);
+      font: inherit;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .q-toggle:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
+    .q-toggle .box {
+      width: 14px; height: 14px;
+      border-radius: 4px;
+      border: 1.5px solid currentColor;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .q-toggle .box svg { width: 11px; height: 11px; opacity: 0; }
+    .q-card.discussed .q-toggle { color: var(--green); border-color: rgba(34,197,94,0.4); }
+    .q-card.discussed .q-toggle .box { background: var(--green); border-color: var(--green); color: #052e16; }
+    .q-card.discussed .q-toggle .box svg { opacity: 1; }
+
+    /* ══════════════════════════
+       NEXT STEPS + FOOTER
+    ══════════════════════════ */
+    #cta { padding: 100px 0; text-align: center; position: relative; overflow: hidden; }
+    .cta-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(59,130,246,0.08) 0%, transparent 70%); pointer-events: none; }
+    .cta-inner { position: relative; z-index: 1; }
+    .cta-headline { font-size: clamp(32px, 5vw, 52px); font-weight: 900; letter-spacing: -0.02em; margin-bottom: 16px; }
+    .cta-sub { font-size: 17px; color: var(--grey); margin: 0 auto 48px; max-width: 640px; }
+    .slot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; max-width: 980px; margin: 0 auto 32px; }
+    .slot-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 20px; text-align: center; }
+    .slot-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--blue-dim); display: flex; align-items: center; justify-content: center; color: var(--blue); margin: 0 auto 14px; }
+    .slot-day { font-size: 17px; font-weight: 800; margin-bottom: 4px; }
+    .slot-time { font-size: 14px; font-weight: 600; color: var(--blue); margin-bottom: 6px; }
+    .slot-date { font-size: 12.5px; color: var(--grey); line-height: 1.5; }
+    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+
+    footer { padding: 48px 0; border-top: 1px solid var(--border); }
+    .footer-inner { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; }
+    .footer-brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      padding: 24px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      width: 100%;
+    }
+    .footer-brand-sep { width: 1px; height: 40px; background: var(--border); }
+    .footer-brand-for { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+    .footer-brand-for-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); }
+    .footer-tagline { font-size: 13px; font-weight: 600; color: var(--blue); letter-spacing: 0.08em; text-transform: uppercase; }
+    .footer-contact { font-size: 14px; color: var(--grey); line-height: 1.8; }
+    .footer-contact a { color: var(--grey); text-decoration: none; transition: color 0.2s; }
+    .footer-contact a:hover { color: var(--white); }
+    .footer-copy { font-size: 12px; color: var(--grey-dim); }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--grey-dim); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .fade-in { opacity: 1; transform: none; transition: none; }
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress" aria-hidden="true"></div>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <a href="#hero" class="nav-logo">
+    <img class="wordmark" src="https://ruppell.co.za/wp-content/uploads/2025/11/Untitled-design-10-e1762169365729.png" alt="Ruppell" />
+    <span class="nav-phase">Phase 1</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#boards">Boards</a></li>
+    <li><a href="#walkthrough">Walkthrough</a></li>
+    <li><a href="#automations">Automations</a></li>
+    <li><a href="#questions">Open Questions</a></li>
+    <li><a href="#cta" style="color:#3b82f6;font-weight:700;">Next Steps</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section id="hero" class="section">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-meta fade-in">
+        <span class="label">Phase 1 Walkthrough</span>
+        <div class="hero-meta-sep"></div>
+        <span class="hero-meta-item">Confidential</span>
+        <div class="hero-meta-sep"></div>
+        <span class="hero-meta-item">26 October 2026</span>
+        <div class="hero-meta-sep"></div>
+        <span class="hero-meta-item">CRM Foundation &amp; Core Operations</span>
+      </div>
+      <h1 class="hero-headline fade-in fade-in-delay-1">
+        The Foundation<br/>Is <span class="accent">Built.</span>
+      </h1>
+      <p class="hero-sub fade-in fade-in-delay-2">
+        Phase 1 is working in a demo workspace with sample data. This page covers how it fits together, what each board does, what every status means, what monday now does for you, and the questions we need you to answer before we rebuild it in your own account.
+      </p>
+
+      <div class="hero-stats fade-in fade-in-delay-3">
+        <div class="hero-stat">
+          <div class="hero-stat-value">6<span class="unit">boards</span></div>
+          <div class="hero-stat-label">+ 1 team dashboard</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">14<span class="unit">rules</span></div>
+          <div class="hero-stat-label">Automations live</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">3<span class="unit">forms</span></div>
+          <div class="hero-stat-label">Phase 3 head start</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">17<span class="unit">questions</span></div>
+          <div class="hero-stat-label">For you to answer</div>
+        </div>
+      </div>
+
+      <div class="hero-actions fade-in fade-in-delay-3">
+        <a href="#boards" class="btn btn-primary">
+          <i data-lucide="layout-grid" style="width:16px;height:16px;"></i>
+          Explore the boards
+        </a>
+        <a href="#questions" class="btn btn-ghost">
+          <i data-lucide="message-circle-question" style="width:16px;height:16px;"></i>
+          Go to open questions
+        </a>
+      </div>
+
+      <div class="hero-lockup fade-in fade-in-delay-4">
+        <div class="hero-lockup-side hero-lockup-from">
+          <div class="lockup-label">Prepared by</div>
+          <div><img class="wordmark" src="https://ruppell.co.za/wp-content/uploads/2025/11/Untitled-design-10-e1762169365729.png" alt="Ruppell" style="height:28px;" /></div>
+        </div>
+        <div class="hero-lockup-arrow">&rarr;</div>
+        <div class="hero-lockup-side">
+          <div class="lockup-label">Prepared for <strong style="color:#fff;">This Is Me Properties</strong></div>
+          <div class="client-wordmark">This Is Me<span class="accent">&nbsp;Properties</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ OVERVIEW ══ -->
+<section id="overview" class="section alt-bg">
+  <div class="container">
+    <div class="fade-in">
+      <div class="label" style="margin-bottom:12px;">Where We Are</div>
+      <h2 class="section-title">One Simple, Reliable System<br/>for Everyday <span class="accent">Property Work.</span></h2>
+      <p class="section-subtitle">That was the Phase 1 brief. Here&rsquo;s what it covers, what has been built against it, and what has to happen before your team uses it for real.</p>
+    </div>
+
+    <div class="brief-cards">
+      <div class="brief-card fade-in fade-in-delay-1">
+        <div class="brief-icon"><i data-lucide="database" style="width:22px;height:22px;"></i></div>
+        <h3>The CRM structure</h3>
+        <p>Enquiries, contacts, properties, viewings, and separate sales and rental pipelines, all linked to each other. Information is entered once and shows up everywhere it&rsquo;s needed.</p>
+      </div>
+      <div class="brief-card fade-in fade-in-delay-2">
+        <div class="brief-icon"><i data-lucide="route" style="width:22px;height:22px;"></i></div>
+        <h3>Your process, stage by stage</h3>
+        <p>Your documented listing process, buyer and tenant journey and rental prospects process are now the statuses on each board, in your words.</p>
+      </div>
+      <div class="brief-card fade-in fade-in-delay-3">
+        <div class="brief-icon"><i data-lucide="layout-dashboard" style="width:22px;height:22px;"></i></div>
+        <h3>Basic reporting</h3>
+        <p>One team dashboard: new enquiries, listings, sales and rentals by stage, commission in the pipeline, and a calendar of viewings, follow-ups and mandate expiries.</p>
+      </div>
+      <div class="brief-card fade-in fade-in-delay-4">
+        <div class="brief-icon"><i data-lucide="graduation-cap" style="width:22px;height:22px;"></i></div>
+        <h3>Training &amp; handover</h3>
+        <p>Comes after the rebuild in your account: a walkthrough for the whole team, everyday use, and written handover notes. The demo is what we train from.</p>
+      </div>
+    </div>
+
+    <div class="brief-confirm fade-in fade-in-delay-2">
+      <i data-lucide="circle-check" style="width:16px;height:16px;"></i>
+      Built and tested end to end with sample data on 25 October 2026
+    </div>
+
+    <div class="done-when fade-in fade-in-delay-2">
+      <div class="px-sub"><i data-lucide="flag" style="width:13px;height:13px;"></i> Phase 1 is done when</div>
+      <p>Your team can create a new contact, register a property, track a buyer or tenant, update a transaction and see what needs to happen next.</p>
+    </div>
+
+    <div class="callout fade-in fade-in-delay-2">
+      <i data-lucide="flask-conical" style="width:22px;height:22px;"></i>
+      <div>
+        <strong class="h">What you&rsquo;re looking at today is a demo</strong>
+        <p>It&rsquo;s built in <strong>Ruppell&rsquo;s monday CRM account</strong> with <strong>made-up people and properties</strong>, so we can walk through it together without touching real client data. Once you&rsquo;ve answered the questions below, we adjust the design and <strong>rebuild it in your own monday CRM Pro account</strong>. The build is scripted, so that&rsquo;s quick and nothing is retyped by hand.</p>
+        <p>The sample data tells a few stories on purpose: a sale with conditions pending, a signed lease, a sale that fell through and went back on the market, an unvetted tenant with a viewing booked, two mandates about to expire, a seller who is also buying, and a family trust as landlord.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ ARCHITECTURE ══ -->
+<section id="architecture" class="section">
+  <div class="container">
+    <div class="fade-in">
+      <div class="label" style="margin-bottom:12px;">The Architecture</div>
+      <h2 class="section-title">One Workspace.<br/>Six Boards. Everything <span class="accent">Linked.</span></h2>
+      <p class="section-subtitle">One closed workspace for your three users, arranged in the order the work happens: clients, then properties, then deals. Select a board to see its full breakdown.</p>
+    </div>
+
+    <div class="ws-grid fade-in fade-in-delay-1">
+      <div class="ws-folder home">
+        <div class="ws-folder-head"><i data-lucide="sun" style="width:14px;height:14px;"></i> Start here every day</div>
+        <button type="button" class="ws-board" data-open-board="dashboard"><span class="em">📊</span><span><strong>Team Dashboard</strong><small>What&rsquo;s new, what&rsquo;s live, what&rsquo;s next</small></span></button>
+      </div>
+      <div class="ws-folder">
+        <div class="ws-folder-head"><i data-lucide="folder" style="width:14px;height:14px;"></i> 1 &middot; Clients</div>
+        <button type="button" class="ws-board" data-open-board="enquiries"><span class="em">📥</span><span><strong>Enquiries</strong><small>Every new enquiry lands here first</small></span></button>
+        <button type="button" class="ws-board" data-open-board="contacts"><span class="em">📇</span><span><strong>Contacts</strong><small>Every person or entity you work with</small></span></button>
+      </div>
+      <div class="ws-folder">
+        <div class="ws-folder-head"><i data-lucide="folder" style="width:14px;height:14px;"></i> 2 &middot; Properties</div>
+        <button type="button" class="ws-board" data-open-board="properties"><span class="em">🏡</span><span><strong>Properties</strong><small>Every house you&rsquo;re winning, marketing or have closed</small></span></button>
+        <button type="button" class="ws-board" data-open-board="viewings"><span class="em">👁</span><span><strong>Viewings</strong><small>One row per viewing</small></span></button>
+      </div>
+      <div class="ws-folder">
+        <div class="ws-folder-head"><i data-lucide="folder" style="width:14px;height:14px;"></i> 3 &middot; Deals</div>
+        <button type="button" class="ws-board" data-open-board="sales"><span class="em">💰</span><span><strong>Sales Pipeline</strong><small>Offer &rarr; registration &rarr; commission</small></span></button>
+        <button type="button" class="ws-board" data-open-board="rentals"><span class="em">🔑</span><span><strong>Rental Pipeline</strong><small>Application &rarr; handover</small></span></button>
+      </div>
+      <div class="ws-folder sys">
+        <div class="ws-folder-head"><i data-lucide="settings" style="width:14px;height:14px;"></i> System (don&rsquo;t edit)</div>
+        <div class="ws-board static"><span class="em">🗂</span><span><strong>Activities</strong><small>monday&rsquo;s own log of emails, calls and meetings on each record</small></span></div>
+      </div>
+    </div>
+
+    <div class="arch-head fade-in">
+      <div class="label" style="margin-bottom:6px;">How the boards connect</div>
+      <p class="section-subtitle" style="margin-top:4px;">Every link works both ways. Link a viewing to a property and it appears on that property and on the person&rsquo;s contact record too.</p>
+    </div>
+
+    <div class="arch-wrap fade-in fade-in-delay-1">
+      <div class="scroll-hint"><i data-lucide="move-horizontal" style="width:14px;height:14px;"></i> Scroll sideways to see the whole diagram</div>
+      <svg viewBox="0 0 1000 440" role="img" aria-labelledby="archTitle archDesc">
+        <title id="archTitle">How the six boards connect</title>
+        <desc id="archDesc">Enquiries become Contacts. Contacts own Properties. Viewings, the Sales Pipeline and the Rental Pipeline each link one or more contacts to one property.</desc>
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="#3b82f6" />
+          </marker>
+          <marker id="arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="rgba(255,255,255,0.45)" />
+          </marker>
+        </defs>
+
+        <!-- Owner(s): Contacts ↔ Properties over the top -->
+        <path class="a-line" d="M295 80 V34 H885 V80" marker-start="url(#arr)" marker-end="url(#arr)" />
+        <text class="a-lbl strong" x="590" y="26" text-anchor="middle">Owner(s) · a contact owns one or more properties</text>
+
+        <!-- Enquiries → Contacts -->
+        <path class="a-line" d="M160 220 H206" marker-end="url(#arr)" />
+        <text class="a-lbl" x="183" y="206" text-anchor="middle">Create a</text>
+        <text class="a-lbl" x="183" y="246" text-anchor="middle">contact</text>
+        <!-- Enquiries ⇢ Properties (below) -->
+        <path class="a-line dash" d="M85 255 V414 H885 V382" marker-end="url(#arrg)" />
+        <text class="a-lbl" x="480" y="432" text-anchor="middle">Property enquired about (optional)</text>
+
+        <!-- middle links left: contacts -->
+        <path class="a-line" d="M500 130 H384" marker-end="url(#arr)" />
+        <text class="a-lbl" x="442" y="122" text-anchor="middle">Contact</text>
+        <path class="a-line" d="M500 225 H384" marker-end="url(#arr)" />
+        <text class="a-lbl" x="442" y="217" text-anchor="middle">Buyer · Seller</text>
+        <path class="a-line" d="M500 320 H384" marker-end="url(#arr)" />
+        <text class="a-lbl" x="442" y="312" text-anchor="middle">Tenant · Landlord</text>
+        <!-- middle links right: property -->
+        <path class="a-line" d="M680 130 H796" marker-end="url(#arr)" />
+        <text class="a-lbl" x="738" y="122" text-anchor="middle">Property</text>
+        <path class="a-line" d="M680 225 H796" marker-end="url(#arr)" />
+        <text class="a-lbl" x="738" y="217" text-anchor="middle">Property</text>
+        <path class="a-line" d="M680 320 H796" marker-end="url(#arr)" />
+        <text class="a-lbl" x="738" y="312" text-anchor="middle">Property</text>
+
+        <!-- Enquiries -->
+        <g class="a-node inbox" data-open-board="enquiries" tabindex="0" role="button" aria-label="Open the Enquiries board">
+          <rect x="10" y="185" width="150" height="70" rx="12" />
+          <text class="a-title" x="85" y="216" text-anchor="middle">📥 Enquiries</text>
+          <text class="a-sub" x="85" y="236" text-anchor="middle">the inbox</text>
+        </g>
+
+        <!-- Contacts -->
+        <g class="a-node core" data-open-board="contacts" tabindex="0" role="button" aria-label="Open the Contacts board">
+          <rect x="210" y="80" width="170" height="300" rx="14" />
+          <text class="a-title" x="295" y="114" text-anchor="middle">📇 Contacts</text>
+          <text class="a-sub" x="295" y="134" text-anchor="middle">every person or entity</text>
+          <text class="a-item" x="228" y="182">Shows on each contact:</text>
+          <text class="a-item" x="228" y="206">· Properties owned</text>
+          <text class="a-item" x="228" y="226">· Their original enquiry</text>
+          <text class="a-item" x="228" y="246">· Their viewings</text>
+          <text class="a-item" x="228" y="266">· Their sales &amp; rental deals</text>
+        </g>
+
+        <!-- Middle -->
+        <g class="a-node" data-open-board="viewings" tabindex="0" role="button" aria-label="Open the Viewings board">
+          <rect x="500" y="95" width="180" height="70" rx="12" />
+          <text class="a-title" x="590" y="126" text-anchor="middle">👁 Viewings</text>
+          <text class="a-sub" x="590" y="146" text-anchor="middle">one person · one property</text>
+        </g>
+        <g class="a-node" data-open-board="sales" tabindex="0" role="button" aria-label="Open the Sales Pipeline board">
+          <rect x="500" y="190" width="180" height="70" rx="12" />
+          <text class="a-title" x="590" y="221" text-anchor="middle">💰 Sales Pipeline</text>
+          <text class="a-sub" x="590" y="241" text-anchor="middle">+ conveyancer</text>
+        </g>
+        <g class="a-node" data-open-board="rentals" tabindex="0" role="button" aria-label="Open the Rental Pipeline board">
+          <rect x="500" y="285" width="180" height="70" rx="12" />
+          <text class="a-title" x="590" y="316" text-anchor="middle">🔑 Rental Pipeline</text>
+          <text class="a-sub" x="590" y="336" text-anchor="middle">one tenancy</text>
+        </g>
+
+        <!-- Properties -->
+        <g class="a-node core" data-open-board="properties" tabindex="0" role="button" aria-label="Open the Properties board">
+          <rect x="800" y="80" width="170" height="300" rx="14" />
+          <text class="a-title" x="885" y="114" text-anchor="middle">🏡 Properties</text>
+          <text class="a-sub" x="885" y="134" text-anchor="middle">every listing</text>
+          <text class="a-item" x="816" y="182">Shows on each property:</text>
+          <text class="a-item" x="816" y="206">· Owner phone &amp; email</text>
+          <text class="a-item" x="816" y="226">· Every enquiry about it</text>
+          <text class="a-item" x="816" y="246">· Every viewing + feedback</text>
+          <text class="a-item" x="816" y="266">· Last viewing date</text>
+          <text class="a-item" x="816" y="286">· Sale stage / Rental stage</text>
+          <text class="a-item" x="816" y="306">· Mandate days left</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="see-grid fade-in fade-in-delay-1">
+      <div class="see-card">
+        <div class="k">Open a</div>
+        <h4>🏡 Property</h4>
+        <p>Owner(s) with phone and email, every enquiry and viewing (who, when, how they felt), the live sale or rental stage, and mandate days left.</p>
+      </div>
+      <div class="see-card">
+        <div class="k">Open a</div>
+        <h4>📇 Contact</h4>
+        <p>The properties they own, the enquiry they came from, their viewings, and every sale or rental deal they&rsquo;re part of.</p>
+      </div>
+      <div class="see-card">
+        <div class="k">Open a</div>
+        <h4>💰 🔑 Deal</h4>
+        <p>The property&rsquo;s asking price and area, buyer and seller or tenant and landlord phones, the tenant&rsquo;s vetting status, and the commission.</p>
+      </div>
+      <div class="see-card">
+        <div class="k">Open a</div>
+        <h4>👁 Viewing</h4>
+        <p>The viewer&rsquo;s phone and vetting status, and the property&rsquo;s listing type and area, without leaving the row.</p>
+      </div>
+    </div>
+
+    <div class="arch-head fade-in">
+      <div class="label" style="margin-bottom:6px;">Three journeys, kept separate on purpose</div>
+      <p class="section-subtitle" style="margin-top:4px;">People, properties and deals move at different speeds. A tenant can be vetted and view five houses before any deal exists, so a deal only starts at the offer or application.</p>
+    </div>
+    <div class="journeys fade-in fade-in-delay-1">
+      <div class="journey">
+        <div class="j-top"><span class="j-icon"><i data-lucide="user-search" style="width:17px;height:17px;"></i></span><h4>The person</h4></div>
+        <dl><dt>Lives on</dt><dd>📥 Enquiries &rarr; 📇 Contacts</dd><dt>Starts</dt><dd>First enquiry</dd><dt>Ends</dt><dd>Completed, Lost or Inactive</dd></dl>
+      </div>
+      <div class="journey">
+        <div class="j-top"><span class="j-icon"><i data-lucide="house" style="width:17px;height:17px;"></i></span><h4>The property</h4></div>
+        <dl><dt>Lives on</dt><dd>🏡 Properties</dd><dt>Starts</dt><dd>Owner enquiry or agent approach</dd><dt>Ends</dt><dd>Sold / Let, Withdrawn or Expired</dd></dl>
+      </div>
+      <div class="journey">
+        <div class="j-top"><span class="j-icon"><i data-lucide="handshake" style="width:17px;height:17px;"></i></span><h4>The deal</h4></div>
+        <dl><dt>Lives on</dt><dd>💰 Sales or 🔑 Rental Pipeline</dd><dt>Starts</dt><dd>Offer or application</dd><dt>Ends</dt><dd>Registered / Handed over, or Fell through / Declined</dd></dl>
+      </div>
+    </div>
+
+    <div class="callout fade-in fade-in-delay-2">
+      <i data-lucide="tags" style="width:22px;height:22px;"></i>
+      <div>
+        <strong class="h">Shared lists make matching possible</strong>
+        <p>A buyer&rsquo;s <strong>Preferred areas</strong> and <strong>Non-negotiables</strong> use exactly the same lists as a property&rsquo;s <strong>Area</strong> and <strong>Features</strong> (solar, backup water, staff accommodation, pool, home office and so on). Matching a buyer to a listing is then like for like today, and can be automated later in Phase 7.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ BOARD EXPLORER ══ -->
+<section id="boards" class="section alt-bg">
+  <div class="container">
+    <div class="fade-in">
+      <div class="label" style="margin-bottom:12px;">Board by Board</div>
+      <h2 class="section-title">Every Board.<br/>Every <span class="accent">Status.</span></h2>
+      <p class="section-subtitle">Select a board for its purpose, its groups, what each status means and what monday does when it changes, plus the columns, saved views and links it carries.</p>
+    </div>
+
+    <div class="px fade-in fade-in-delay-1" id="board-explorer">
+      <div class="px-list" role="tablist" aria-label="Boards" aria-orientation="vertical" id="bxList"></div>
+      <div class="px-panels" id="bxPanels"></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ WALKTHROUGH ══ -->
+<section id="walkthrough" class="section">
+  <div class="container">
+    <div class="fade-in">
+      <div class="label" style="margin-bottom:12px;">See It in Action</div>
+      <h2 class="section-title">One Property,<br/>End to <span class="accent">End.</span></h2>
+      <p class="section-subtitle">12 Augrabies Falls Blvd, straight from the demo data. Step through what your team does and what monday does at each point. Board tags open that board above.</p>
+    </div>
+
+    <div class="wt-card fade-in fade-in-delay-1">
+      <div class="wt-track-wrap">
+        <div class="wt-track" id="wtTrack"></div>
+      </div>
+      <div class="wt-body" id="wtBody" aria-live="polite">
+        <div class="wt-head">
+          <span class="wt-count" id="wtCount"></span>
+          <h3 id="wtTitle"></h3>
+        </div>
+        <div class="wt-cols">
+          <div class="wt-col team">
+            <div class="wt-col-label"><i data-lucide="user-round" style="width:14px;height:14px;"></i> Your team</div>
+            <p id="wtTeam"></p>
+          </div>
+          <div class="wt-col sys">
+            <div class="wt-col-label"><i data-lucide="workflow" style="width:14px;height:14px;"></i> monday</div>
+            <ul class="wt-sys" id="wtSys"></ul>
+          </div>
+        </div>
+        <div class="wt-foot">
+          <div class="wt-boards" id="wtBoards"></div>
+          <div class="wt-btns">
+            <button type="button" class="mini-btn" id="wtPrev"><i data-lucide="arrow-left" style="width:14px;height:14px;"></i> Back</button>
+            <button type="button" class="mini-btn solid" id="wtNext"><span id="wtNextLabel">Next step</span> <i data-lucide="arrow-right" style="width:14px;height:14px;"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout fade-in fade-in-delay-2">
+      <i data-lucide="eye" style="width:22px;height:22px;"></i>
+      <div>
+        <strong class="h">The promise, kept</strong>
+        <p>Open 12 Augrabies at any point and you see <strong>both owners, both viewings with their feedback, the live sale stage and the days left on the mandate</strong>, without searching three places.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ AUTOMATIONS ══ -->
+<section id="automations" class="section alt-bg">
+  <div class="container">
+    <div class="fade-in">
+      <div class="label" style="margin-bottom:12px;">What Happens Automatically</div>
+      <h2 class="section-title">Less Admin.<br/>Same <span class="accent">Control.</span></h2>
+      <p class="section-subtitle">Phase 1 automations keep the structure tidy: records move to the right group, the right person is told, and deals keep the property up to date. Reminders and alerts come in Phase 2.</p>
+    </div>
+
+    <div class="auto-list" id="autoList"></div>
+
+    <div class="split">
+      <div class="callout fade-in">
+        <i data-lucide="hand" style="width:22px;height:22px;"></i>
+        <div>
+          <strong class="h">Still manual in Phase 1, on purpose</strong>
+          <p>Setting a property to <strong>Under offer / Applying</strong> when a deal starts (a deal often exists before the property is linked) &middot; changing a contact&rsquo;s <strong>Search stage</strong> &middot; typing the <strong>mandate expiry</strong> from the signed mandate &middot; tenant <strong>vetting</strong> &middot; copying the <strong>registration date</strong> to the property.</p>
+        </div>
+      </div>
+      <div class="callout warn fade-in fade-in-delay-1">
+        <i data-lucide="triangle-alert" style="width:22px;height:22px;"></i>
+        <div>
+          <strong class="h">What monday can&rsquo;t do natively</strong>
+          <p>It <strong>can&rsquo;t block</strong> a viewing for an unvetted tenant, so the Viewings board shows the vetting status instead. <strong>WhatsApp and Property24 enquiries</strong> are entered by hand for now. Automatic capture is assessed in Phase 2 and priced separately.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="fade-in" style="margin-top:20px;font-size:13px;color:var(--grey);">Expected usage: roughly 150&ndash;400 automation actions a month for a three-person team, which fits comfortably inside the Pro plan allowance. We&rsquo;ll confirm the current figure with monday.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ ACCESS & POPIA ══ -->
+<section id="access" class="section">
+  <div class="container">
+    <div class="fade-in">
+      <div class="label" style="margin-bottom:12px;">Access &amp; POPIA</div>
+      <h2 class="section-title">Your Clients&rsquo; Data,<br/><span class="accent">Kept Close.</span></h2>
+      <p class="section-subtitle">Client and property records are personal information under POPIA. Phase 1 sets sensible defaults; your compliance adviser owns the policy.</p>
+    </div>
+    <div class="brief-cards">
+      <div class="brief-card fade-in fade-in-delay-1">
+        <div class="brief-icon"><i data-lucide="lock" style="width:22px;height:22px;"></i></div>
+        <h3>Closed workspace, no guests</h3>
+        <p>Only your three users. No guests and no public board links in Phases 1 to 6.</p>
+        <span class="verify">Confirming on your Pro plan</span>
+      </div>
+      <div class="brief-card fade-in fade-in-delay-2">
+        <div class="brief-icon"><i data-lucide="user-cog" style="width:22px;height:22px;"></i></div>
+        <h3>One admin, full-edit team</h3>
+        <p>Jessica as account admin and board owner (to confirm). The other two can edit everything, so a three-person team can cover for each other.</p>
+      </div>
+      <div class="brief-card fade-in fade-in-delay-3">
+        <div class="brief-icon"><i data-lucide="eye-off" style="width:22px;height:22px;"></i></div>
+        <h3>Restricted columns</h3>
+        <p><strong>Commission %, Commission (R)</strong> and <strong>Access / alarm notes</strong> visible to the admin only. Two-factor sign-in for all users.</p>
+        <span class="verify">Confirming on your Pro plan</span>
+      </div>
+      <div class="brief-card fade-in fade-in-delay-4">
+        <div class="brief-icon"><i data-lucide="shield-check" style="width:22px;height:22px;"></i></div>
+        <h3>POPIA habits built in</h3>
+        <p>A <strong>POPIA consent</strong> status on every enquiry and contact, and on every form. ID and FICA documents go in the FICA column only, never in updates or WhatsApp. Closed contacts are reviewed yearly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ FORMS (PHASE 3 HEAD START) ══ -->
+<section id="forms" class="section alt-bg">
+  <div class="container">
+    <div class="fade-in">
+      <div class="label" style="margin-bottom:12px;">A Head Start on Phase 3</div>
+      <h2 class="section-title">Your Questionnaires,<br/>Already <span class="accent">Online.</span></h2>
+      <p class="section-subtitle">While building we also put your three questionnaires online. Clients fill in their own requirements and the answers go straight into the right columns, with nothing to retype. This belongs to Phase 3, not Phase 1. We&rsquo;ll agree together whether to keep it.</p>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-card fade-in fade-in-delay-1">
+        <div class="brief-icon"><i data-lucide="globe" style="width:22px;height:22px;"></i></div>
+        <h3>Website enquiry</h3>
+        <div class="lands">&rarr; 📥 Enquiries &middot; New enquiries</div>
+        <p>For your website&rsquo;s contact page. Creates the enquiry, sets it to New enquiry and notifies the agent.</p>
+        <a class="mini-btn" href="https://forms.monday.com/forms/70004b6418e9fa60437525c2d7886ece?r=euc1" target="_blank" rel="noopener">Open form <i data-lucide="external-link" style="width:13px;height:13px;"></i></a>
+      </div>
+      <div class="form-card fade-in fade-in-delay-2">
+        <div class="brief-icon"><i data-lucide="user-check" style="width:22px;height:22px;"></i></div>
+        <h3>Buyer / renter questionnaire</h3>
+        <div class="lands">&rarr; 📇 Contacts &middot; Active buyers &amp; tenants</div>
+        <p>Emailed automatically when an enquiry is set to <strong style="color:#d1d5db;">Questionnaire sent</strong> and they want to buy or rent. Creates the contact with budget, areas, non-negotiables, finance and consent.</p>
+        <a class="mini-btn" href="https://forms.monday.com/forms/11edef2650cb7c9b1146b8944ffd5519?r=euc1" target="_blank" rel="noopener">Open form <i data-lucide="external-link" style="width:13px;height:13px;"></i></a>
+      </div>
+      <div class="form-card fade-in fade-in-delay-3">
+        <div class="brief-icon"><i data-lucide="file-signature" style="width:22px;height:22px;"></i></div>
+        <h3>Owner property questionnaire</h3>
+        <div class="lands">&rarr; 🏡 Properties &middot; Winning the mandate</div>
+        <p>Emailed when the enquiry is to sell or let. Creates the property with its specs, the owner&rsquo;s details and a signature, at Listing stage Owner enquiry.</p>
+        <a class="mini-btn" href="https://forms.monday.com/forms/f90a9218d7234b5d3037bb1e90a69fcc?r=euc1" target="_blank" rel="noopener">Open form <i data-lucide="external-link" style="width:13px;height:13px;"></i></a>
+      </div>
+    </div>
+
+    <div class="callout warn fade-in fade-in-delay-2">
+      <i data-lucide="info" style="width:22px;height:22px;"></i>
+      <div>
+        <strong class="h">Two things to know</strong>
+        <p>A form always creates a <strong>new</strong> record, so if the person is already a contact you merge the two. The questionnaire emails are sent through Gmail in the demo; in your account they&rsquo;ll go through your own email provider (see question Q-11).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SCOPE ══ -->
+<section id="scope" class="section">
+  <div class="container">
+    <div class="fade-in">
+      <div class="label" style="margin-bottom:12px;">Scope</div>
+      <h2 class="section-title">What Phase 1 Covers,<br/>and What It <span class="accent">Leaves Out</span></h2>
+      <p class="section-subtitle">Each of these was left out on purpose so the workspace stays simple. Most already has a planned phase.</p>
+    </div>
+    <div class="scope-grid">
+      <div class="scope-col in fade-in fade-in-delay-1">
+        <h3><i data-lucide="circle-check" style="width:18px;height:18px;color:var(--green);"></i> Built in Phase 1</h3>
+        <ul>
+          <li><strong>Six linked boards</strong> covering enquiries, contacts, properties, viewings, sales and rentals</li>
+          <li><strong>Your stages as statuses</strong>, with records moving to the right group automatically</li>
+          <li><strong>Buyer &amp; tenant requirements</strong> captured as filterable columns, plus rental vetting and buyer finance</li>
+          <li><strong>Mandate tracking</strong> with a days-left countdown and a 30-day expiry view</li>
+          <li><strong>Commission calculated</strong> on every deal (rules to confirm)</li>
+          <li><strong>A one-screen team dashboard</strong> and saved views for daily follow-ups</li>
+          <li><strong>Training and written handover notes</strong> once it&rsquo;s in your account</li>
+        </ul>
+      </div>
+      <div class="scope-col out fade-in fade-in-delay-2">
+        <h3><i data-lucide="circle-slash" style="width:18px;height:18px;color:#f87171;"></i> Deliberately not in Phase 1</h3>
+        <ul>
+          <li><strong>A separate tasks board.</strong> Next action + date on every record does the job.</li>
+          <li><strong>Reminders</strong> for follow-ups, mandate expiries, lease ends and viewings <span class="ph-tag">P2</span></li>
+          <li><strong>Document checklists</strong> and the full online forms rollout <span class="ph-tag">P3</span></li>
+          <li><strong>Marketing checklist</strong> and the monthly owner report <span class="ph-tag">P4</span></li>
+          <li><strong>Inspections, meters, keys</strong> and the 14-day snag list <span class="ph-tag">P5</span></li>
+          <li><strong>KPI dashboards</strong> and agent scorecards <span class="ph-tag">P6</span></li>
+          <li><strong>WhatsApp, Property24, Sims, Lightstone, FNB app</strong>, auto-matching, AI-assisted CMA <span class="ph-tag p7">P7</span></li>
+          <li><strong>HubSpot migration or bulk loading</strong> of old records. Quoted separately if wanted.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ OPEN QUESTIONS ══ -->
+<section id="questions" class="section alt-bg">
+  <div class="container">
+    <div class="fade-in">
+      <div class="label" style="margin-bottom:12px;">Over to You</div>
+      <h2 class="section-title">Open Questions<br/>on <span class="accent">Your Side</span></h2>
+      <p class="section-subtitle">The answers to these shape the rebuild in your account. Questions marked <b style="color:#93c5fd;">New</b> came out of the build itself. Tick each one off as we discuss it.</p>
+    </div>
+
+    <div class="q-progress fade-in" aria-live="polite">
+      <span><b id="qDone">0</b> of <b id="qTotal">0</b> discussed</span>
+      <div class="q-bar" aria-hidden="true"><span id="qBar"></span></div>
+      <button type="button" class="q-reset" id="qReset">Reset</button>
+    </div>
+
+    <div id="qThemes"></div>
+
+    <div class="callout fade-in">
+      <i data-lucide="clipboard-check" style="width:22px;height:22px;"></i>
+      <div>
+        <strong class="h">On our side, before you buy seats</strong>
+        <p>We&rsquo;re confirming with monday that your <strong>CRM Pro</strong> plan includes a closed workspace, column-level permissions and enforced two-factor sign-in, and the current automation allowance. The demo account behaved slightly differently on some of these, so we won&rsquo;t promise them until they&rsquo;re confirmed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ NEXT STEPS ══ -->
+<section id="cta">
+  <div class="cta-bg"></div>
+  <div class="container cta-inner">
+    <div class="fade-in">
+      <div class="label" style="margin-bottom:16px;text-align:center;">Next Steps</div>
+      <h2 class="cta-headline">From Demo to Day One</h2>
+      <p class="cta-sub">Four steps between today&rsquo;s walkthrough and your team running the business from monday.</p>
+
+      <div class="slot-grid">
+        <div class="slot-card fade-in fade-in-delay-1">
+          <div class="slot-icon"><i data-lucide="message-square-text" style="width:20px;height:20px;"></i></div>
+          <div class="slot-day">1 &middot; Answers</div>
+          <div class="slot-time">Today&rsquo;s open questions</div>
+          <div class="slot-date">Plus sample records and your area list</div>
+        </div>
+        <div class="slot-card fade-in fade-in-delay-2">
+          <div class="slot-icon"><i data-lucide="pencil-ruler" style="width:20px;height:20px;"></i></div>
+          <div class="slot-day">2 &middot; Adjust</div>
+          <div class="slot-time">Stages, lists &amp; formulas</div>
+          <div class="slot-date">Updated to match your answers</div>
+        </div>
+        <div class="slot-card fade-in fade-in-delay-3">
+          <div class="slot-icon"><i data-lucide="rocket" style="width:20px;height:20px;"></i></div>
+          <div class="slot-day">3 &middot; Rebuild</div>
+          <div class="slot-time">In your monday CRM Pro</div>
+          <div class="slot-date">Scripted, with views, automations and dashboard</div>
+        </div>
+        <div class="slot-card fade-in fade-in-delay-4">
+          <div class="slot-icon"><i data-lucide="graduation-cap" style="width:20px;height:20px;"></i></div>
+          <div class="slot-day">4 &middot; Test &amp; train</div>
+          <div class="slot-time">Your team, hands on</div>
+          <div class="slot-date">Test scenarios, training and handover notes</div>
+        </div>
+      </div>
+
+      <div class="cta-buttons fade-in fade-in-delay-4">
+        <a href="mailto:natalie@ruppell.co.za?subject=This%20Is%20Me%20Properties%20%E2%80%94%20Phase%201" class="btn btn-primary">
+          <i data-lucide="mail" style="width:16px;height:16px;"></i>
+          Email Natalie
+        </a>
+        <a href="tel:+27635243149" class="btn btn-ghost">
+          <i data-lucide="phone" style="width:16px;height:16px;"></i>
+          +27 63 524 3149
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand-row">
+        <div>
+          <img src="https://ruppell.co.za/wp-content/uploads/2025/11/Untitled-design-10-e1762169365729.png" alt="Ruppell" style="height:32px;" />
+        </div>
+        <div class="footer-brand-sep"></div>
+        <div class="footer-brand-for">
+          <div class="footer-brand-for-label">Prepared for</div>
+          <div class="client-wordmark-sm">This Is Me<span class="accent">&nbsp;Properties</span></div>
+        </div>
+      </div>
+      <div class="footer-tagline">Create. Elevate. Dominate.</div>
+      <div class="footer-contact">
+        <a href="mailto:natalie@ruppell.co.za">natalie@ruppell.co.za</a>
+        &nbsp;|&nbsp;
+        <a href="mailto:xander@ruppell.co.za">xander@ruppell.co.za</a>
+        <br />
+        <a href="tel:+27635243149">+27 63 524 3149</a>
+      </div>
+      <div class="footer-copy">&copy; 2026 Ruppell ZA. All rights reserved.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // monday status colours (as configured in the build)
+  const C = {
+    bright_blue: '#579bfc', purple: '#a25ddc', dark_purple: '#784bd1', indigo: '#5559df',
+    grass_green: '#037f4c', done_green: '#00c875', bright_green: '#9cd326', working_orange: '#fdab3d',
+    egg_yolk: '#ffcb00', stuck_red: '#df2f4a', blackish: '#333333', american_gray: '#757575',
+    river: '#66ccff', sunset: '#ff7575', dark_red: '#bb3354', dark_orange: '#ff6d3b',
+    lipstick: '#ff5ac4', navy: '#225091', sofia_pink: '#ff158a', brown: '#7f5347'
+  };
+  const DARK_TEXT = ['egg_yolk', 'bright_green', 'river', 'working_orange'];
+
+  function chip(label, color) {
+    const cls = ['chip'];
+    if (DARK_TEXT.includes(color)) cls.push('dark');
+    if (color === 'blackish') cls.push('outline');
+    return '<span class="' + cls.join(' ') + '" style="background:' + C[color] + '">' + label + '</span>';
+  }
+
+  // ══ Board data ══
+  // st: main status columns with meanings; sets: other label sets; cols: column groups
+  const BOARDS = [
+    {
+      id: 'enquiries', em: '📥', name: 'Enquiries', folder: '1 · Clients', short: 'The inbox',
+      purpose: 'The inbox for every new enquiry: WhatsApp, website, Property24, referrals, walk-ins. You qualify it here first, so Contacts only holds people who are real prospects, and every enquiry stays on record for source and conversion reporting.',
+      item: 'The person’s name', board: '3',
+      groups: [['New enquiries', '#579bfc'], ['Converted to contact', '#00c875'], ['Not proceeding', '#757575']],
+      st: [{
+        name: 'Status', note: 'Where the enquiry stands. Moves left to right as you work it.', main: true,
+        rows: [
+          ['New enquiry', 'bright_blue', 'Just arrived, by hand or from the website form.', 'Set automatically · agent notified'],
+          ['Attempted to contact', 'egg_yolk', 'You’ve tried to reach them and haven’t got through yet.'],
+          ['Contacted', 'working_orange', 'You’ve spoken and agreed a next step. Make sure Email is filled in.'],
+          ['Questionnaire sent', 'purple', 'Set it and monday emails the right questionnaire: buyer/renter for Buy or Rent, the owner questionnaire for Sell or Let.', 'Emails the form'],
+          ['Qualified', 'done_green', 'Serious and suitable. They’re now a contact (from the form, or press Create a contact).', 'Moves to Converted to contact'],
+          ['Unqualified', 'american_gray', 'Not proceeding. The record stays so you can see which sources work.', 'Moves to Not proceeding']
+        ]
+      }],
+      sets: [
+        ['Looking to', 'Sell or Let means an owner enquiry', [['Buy', 'bright_blue'], ['Rent', 'grass_green'], ['Sell', 'purple'], ['Let', 'dark_orange']]],
+        ['Source', 'shared with Contacts', [['WhatsApp', 'grass_green'], ['Website', 'bright_blue'], ['Property24', 'dark_red'], ['Private Property', 'dark_orange'], ['Referral', 'purple'], ['Instagram', 'lipstick'], ['Facebook', 'navy'], ['Other social', 'sofia_pink'], ['Walk-in / Board', 'brown'], ['Database', 'river'], ['Agent prospecting', 'egg_yolk'], ['Other', 'american_gray']]],
+        ['POPIA consent', '', [['Consent given', 'done_green'], ['Not yet asked', 'egg_yolk'], ['Opted out', 'stuck_red']]]
+      ],
+      cols: [
+        ['Who', 'Name · Phone · Email · Company / trust · Agent'],
+        ['The enquiry', 'Status · Source · Looking to · Enquiry notes (in their words) · Property enquired about'],
+        ['Follow-up', 'Next action · Next follow-up · POPIA consent']
+      ],
+      views: ['Open enquiries', 'Kanban by Status', 'Website enquiry form'],
+      links: ['<strong>Property enquired about</strong> → 🏡 Properties (shows on the property’s Enquiries list)', '<strong>Enquiry</strong> ← 📇 Contacts (the contact it became)'],
+      warn: '<strong>Design change to confirm:</strong> the original design put new enquiries straight onto Contacts. Building it showed a separate inbox keeps Contacts clean and keeps a record of every enquiry for reporting. See question Q-03.'
+    },
+    {
+      id: 'contacts', em: '📇', name: 'Contacts', folder: '1 · Clients', short: 'Every person or entity',
+      purpose: 'One record per person or entity: buyers, tenants, sellers, landlords, conveyancers and suppliers. A buyer’s or tenant’s whole journey lives here, with their requirements from the questionnaire, rental vetting, buyer finance and follow-ups.',
+      item: 'Full name, or the company / trust name', board: '4',
+      groups: [['Active buyers & tenants', '#00c875'], ['Owners (sellers & landlords)', '#784bd1'], ['Other contacts', '#c4c4c4'], ['Closed / inactive', '#757575']],
+      st: [{
+        name: 'Search stage', note: 'The buyer or tenant journey after the enquiry is qualified. Owners leave this empty.', main: true,
+        rows: [
+          ['Qualifying', 'purple', 'Questionnaire being completed. Requirements, vetting (rentals) or finance (sales) being gathered.', 'Set when the form is submitted'],
+          ['Qualified – searching', 'grass_green', 'You know what they want. Use Properties › Match a buyer / tenant and send options.'],
+          ['Viewing', 'working_orange', 'Viewings booked. For rentals, only once Vetting is Approved.'],
+          ['Offer / Application', 'egg_yolk', 'They want a specific house. Create the sales or rental deal.'],
+          ['In transaction', 'blackish', 'The deal is under way. Keep the deal up to date; the contact shows its stage.'],
+          ['Completed', 'done_green', 'Bought, or moved in.'],
+          ['Lost', 'stuck_red', 'Not proceeding. Note why in Deal-breakers.', 'Moves to Closed / inactive'],
+          ['Inactive', 'american_gray', 'Gone quiet. Drag to Closed / inactive when you’re done.']
+        ]
+      }, {
+        name: 'Vetting (rentals)', note: 'Tenants must be Approved before viewings.',
+        rows: [
+          ['Not started', 'american_gray', 'Nothing requested yet.'],
+          ['Docs requested', 'egg_yolk', 'You’ve asked for ID, payslips and bank statements.'],
+          ['Docs received', 'working_orange', 'Documents are in the FICA documents column.'],
+          ['TPN / credit done', 'bright_blue', 'TPN or credit check completed.'],
+          ['Approved', 'done_green', 'Cleared to view.'],
+          ['Declined', 'stuck_red', 'Didn’t pass vetting.']
+        ]
+      }, {
+        name: 'Buyer finance (sales)', note: 'How the buyer will pay.', assume: 'To confirm: Q-06',
+        rows: [
+          ['Unknown', 'american_gray', 'Not discussed yet.'],
+          ['Cash', 'done_green', 'Cash buyer.'],
+          ['Pre-approved bond', 'grass_green', 'Has a bond pre-approval.'],
+          ['Bond needed', 'working_orange', 'Will need a bond. Refer to a bond originator.'],
+          ['Proof of funds received', 'bright_blue', 'Proof of funds is on file.']
+        ]
+      }],
+      sets: [
+        ['Role', 'multi-select, a person can be both seller and buyer', [['Buyer', 'bright_blue'], ['Tenant', 'grass_green'], ['Seller', 'purple'], ['Landlord', 'dark_orange'], ['Conveyancer', 'american_gray'], ['Bond originator', 'american_gray'], ['Supplier', 'american_gray'], ['Other', 'american_gray']]],
+        ['Looking to', '', [['Buy', 'bright_blue'], ['Rent', 'grass_green'], ['Both', 'purple']]],
+        ['Owner type', 'owners only', [['Individual', 'bright_blue'], ['Company', 'dark_orange'], ['Trust', 'purple']]],
+        ['Staff accom', '', [['Yes', 'done_green'], ['No', 'stuck_red'], ['Nice to have', 'egg_yolk']]],
+        ['POPIA consent', '', [['Consent given', 'done_green'], ['Not yet asked', 'egg_yolk'], ['Opted out', 'stuck_red']]]
+      ],
+      cols: [
+        ['Who', 'Role · Agent · Phone · Email · Source · Owner type · Entity details (reg. no., trustees) · Birthday · POPIA consent'],
+        ['What they want', 'Looking to · Budget min / max · Beds · Baths · Garages · Staff accom · Style · Preferred areas · Non-negotiables · Neighbourhood & estate must-haves · Ideal occupation · Deal-breakers'],
+        ['Qualification', 'Vetting (rentals) · Buyer finance (sales) · FICA documents (the only place ID documents go)'],
+        ['Follow-up', 'Next action · Next follow-up · Last contacted · Created']
+      ],
+      views: ['Follow-ups due (incl. overdue)', 'Kanban by Search stage', 'Buyer / renter questionnaire form'],
+      links: ['<strong>Properties owned</strong> ↔ 🏡 Properties', '<strong>Enquiry</strong> → 📥 Enquiries', '<strong>Viewings</strong> ← 👁 Viewings', '<strong>Deals</strong> ← 💰 Sales and 🔑 Rental Pipelines'],
+      warn: '<strong>House rules:</strong> one person = one contact (a couple can be one contact unless they need separate FICA). Search before you create. A seller who is also buying is one contact with two roles.'
+    },
+    {
+      id: 'properties', em: '🏡', name: 'Properties', folder: '2 · Properties', short: 'Every listing',
+      purpose: 'Every property you’re winning, marketing or have closed. It runs your documented listing and mandate process, and is the screen that answers “what’s happening with this house?”: owners, enquiries, viewings, feedback and the live deal stage in one place.',
+      item: '“12 Augrabies Falls Blvd, Waterfall”', board: '6',
+      groups: [['Winning the mandate', '#579bfc'], ['Preparing to list', '#fdab3d'], ['Live', '#00c875'], ['Under offer / Applying', '#ffcb00'], ['Sold / Let', '#037f4c'], ['Withdrawn / Expired', '#757575']],
+      st: [{
+        name: 'Listing stage', note: 'The same path whether the owner called you or you approached them. Each change moves the property to the matching group.', main: true,
+        rows: [
+          ['Owner enquiry', 'bright_blue', 'An owner wants a valuation or to sell or let. Link the owner in Owner(s) and attach their questionnaire.', 'Set by the owner form', 'Winning the mandate'],
+          ['Market analysis', 'purple', 'Preparing and presenting the CMA. Fill in CMA value and attach the CMA.', null, 'Winning the mandate'],
+          ['Mandate prep', 'dark_purple', 'Preparing the mandate. Sole is the standard; Open is the exception and shows orange.', null, 'Winning the mandate'],
+          ['Mandate signed', 'indigo', 'Signed. Attach it and type the Mandate expiry (normally start + 3 months).', 'Mandate start = today', 'Winning the mandate'],
+          ['Listing prep', 'working_orange', 'Specs, photos and the write-up. The owner must approve the write-up.', 'Group move', 'Preparing to list'],
+          ['Live', 'done_green', 'Published. Paste the Property24 and website links, tick FNB app for sales.', 'Appears in Match a buyer / tenant', 'Live'],
+          ['Under offer / Applying', 'egg_yolk', 'A deal has started. Set by hand when you create the deal.', 'Group move', 'Under offer / Applying'],
+          ['Sold / Let', 'grass_green', 'Nothing to do: the deal sets this.', 'Set when the deal is Registered / Handed over', 'Sold / Let'],
+          ['Withdrawn', 'american_gray', 'The owner has withdrawn the property.', 'Group move', 'Withdrawn / Expired'],
+          ['Expired', 'stuck_red', 'The mandate lapsed and wasn’t renewed.', 'Group move', 'Withdrawn / Expired']
+        ]
+      }, {
+        name: 'Marketing readiness', note: 'Getting the listing ready to publish.',
+        rows: [
+          ['Not started', 'american_gray', 'Nothing booked yet.'],
+          ['Photos booked', 'egg_yolk', 'Photography or video is booked.'],
+          ['Media received', 'working_orange', 'Photos and video are in.'],
+          ['Write-up with owner', 'purple', 'The description is with the owner for approval.'],
+          ['Write-up approved', 'bright_blue', 'The owner has approved it. Only now can it be used.'],
+          ['Published', 'done_green', 'Live on Property24, the website and social.']
+        ]
+      }],
+      sets: [
+        ['Listing type', '', [['Sale', 'bright_blue'], ['Rental', 'grass_green']]],
+        ['Mandate type', 'Open should be explained', [['Sole', 'done_green'], ['Open (exception)', 'working_orange']]],
+        ['Furnished', 'rentals', [['Furnished', 'done_green'], ['Unfurnished', 'american_gray'], ['Semi-furnished', 'egg_yolk']]],
+        ['Staff accom', '', [['Yes', 'done_green'], ['No', 'american_gray']]]
+      ],
+      cols: [
+        ['The listing', 'Listing type · Listing stage · Agent · Owner(s) + owner phone & email · Location (map) · Area'],
+        ['Price & mandate', 'Asking price · Rental per month · CMA value · Mandate type · Mandate start · Mandate expiry · Mandate days left (calculated)'],
+        ['Specs', 'Beds · Baths · En-suites · Garages · Erf size · House size · Staff accom · Style · Features · Furnished · Rates & taxes · Levy · Features & finishes · Fixtures included'],
+        ['Marketing', 'Marketing readiness · Property24 link · Website link · FNB app'],
+        ['Documents & access', 'Documents (questionnaire, CMA, mandate, write-up, certificates) · Access / alarm notes (admin only)'],
+        ['From other boards', 'Enquiries · Viewings · Last viewing · Sale stage · Rental stage · Next action · Next follow-up · Registration date']
+      ],
+      views: ['Mandates expiring (30 days)', 'Match a buyer / tenant', 'Stage check: Live without P24 link', 'Kanban by Listing stage', 'Map', 'Owner property questionnaire form'],
+      links: ['<strong>Owner(s)</strong> ↔ 📇 Contacts', '<strong>Enquiries</strong> ← 📥 Enquiries', '<strong>Viewings</strong> ← 👁 Viewings', '<strong>Sales deal / Rental deal</strong> ← the pipelines'],
+      warn: '<strong>Mandate renewals:</strong> the Mandates expiring view and the dashboard calendar show every mandate ending in the next 30 days. Renewed? Type the new expiry. Not renewed? Set Expired. Automatic reminders at 30 and 14 days come in Phase 2.'
+    },
+    {
+      id: 'viewings', em: '👁', name: 'Viewings', folder: '2 · Properties', short: 'One row per viewing',
+      purpose: 'One row per viewing, named after the viewer, so a property’s Viewings list reads as its interested parties. It’s the record of how many viewings, who’s keen, and what feedback goes to the owner.',
+      item: 'The viewer’s name', board: '1',
+      groups: [['Viewings (one group; views do the sorting)', '#579bfc']],
+      st: [{
+        name: 'Status', note: 'Where the viewing stands.', main: true,
+        rows: [
+          ['Booked', 'bright_blue', 'In the diary. For rentals, check Vetting status says Approved first.'],
+          ['Confirmed', 'grass_green', 'The client has confirmed.'],
+          ['Done', 'done_green', 'It happened. Add Interest and Feedback while it’s fresh, even from the mobile app.', 'Agent asked for feedback'],
+          ['Cancelled', 'working_orange', 'Called off. Excluded from the owner’s viewing count.'],
+          ['No-show', 'stuck_red', 'The client didn’t arrive. Also excluded.']
+        ]
+      }, {
+        name: 'Interest', note: 'How the viewer felt. Goes into owner feedback.',
+        rows: [
+          ['Hot', 'stuck_red', 'Likely to make an offer or apply.'],
+          ['Warm', 'working_orange', 'Interested, still deciding.'],
+          ['Cold', 'bright_blue', 'Unlikely.'],
+          ['Not for me', 'american_gray', 'A no. Pick a Rejection reason.']
+        ]
+      }],
+      sets: [
+        ['Rejection reason', 'feeds owner feedback and later reporting', [['Price', 'american_gray'], ['Location', 'american_gray'], ['Condition', 'american_gray'], ['Size', 'american_gray'], ['Layout', 'american_gray'], ['Finishes', 'american_gray'], ['Garden', 'american_gray'], ['Security', 'american_gray'], ['Levies', 'american_gray'], ['Schools', 'american_gray'], ['Other', 'american_gray']]]
+      ],
+      cols: [
+        ['The viewing', 'Contact · Property · Date & time · Agent · Status'],
+        ['The outcome', 'Interest · Feedback · Rejection reason · Shared with owner (date)'],
+        ['Shown from other boards', 'Contact phone · Vetting status · Listing type · Area']
+      ],
+      views: ['Upcoming viewings', 'Feedback outstanding', 'Calendar'],
+      links: ['<strong>Contact</strong> → 📇 Contacts', '<strong>Property</strong> → 🏡 Properties (updates its Last viewing)'],
+      warn: '<strong>monday can’t block</strong> booking a viewing for an unvetted tenant. The workaround: the tenant’s Vetting status shows on every viewing row and in Upcoming viewings, so it’s checked before anyone drives out.'
+    },
+    {
+      id: 'sales', em: '💰', name: 'Sales Pipeline', folder: '3 · Deals', short: 'Offer → registration',
+      purpose: 'One row per sale, from the first offer to registration and commission. It links the property, buyer, seller and conveyancer, calculates the commission, and updates the property when the deal closes or falls through.',
+      item: '“12 Augrabies – Mokoena”', board: '3',
+      groups: [['In progress', '#579bfc'], ['Registered', '#00c875'], ['Fell through', '#df2f4a']],
+      st: [{
+        name: 'Stage', note: 'Your sales process isn’t documented yet, so these stages are our best reading of it.', assume: 'To confirm: Q-05', main: true,
+        rows: [
+          ['Offer received', 'bright_blue', 'Connect Property, Buyer, Seller and Agent. Fill in Offer price. Set the property to Under offer.'],
+          ['OTP signed', 'purple', 'Fill in the OTP date and Sale price, and upload the OTP.', 'Commission (R) calculated'],
+          ['Conditions pending', 'working_orange', 'Bond, sale of the buyer’s property or deposit. Fill in the Condition deadline, connect the Conveyancer, chase FICA.'],
+          ['Bond approved / guarantees', 'egg_yolk', 'Bond approved and guarantees in place. Upload the approval.'],
+          ['Transfer in progress', 'blackish', 'With the conveyancer. Fill in Expected transfer.'],
+          ['Registered', 'done_green', 'Fill in the Registration date. Set the buyer to Completed.', 'Deal → Registered · property → Sold / Let'],
+          ['Commission received', 'grass_green', 'Commission is paid.'],
+          ['Fell through', 'stuck_red', 'Pick a Fell-through reason. Buyer back to Qualified – searching.', 'Deal → Fell through · property → Live']
+        ]
+      }],
+      sets: [
+        ['FICA complete', '', [['Outstanding', 'working_orange'], ['Complete', 'done_green']]],
+        ['Fell-through reason', '', [['Bond declined', 'american_gray'], ['Buyer withdrew', 'american_gray'], ['Seller withdrew', 'american_gray'], ['Condition failed', 'american_gray'], ['Inspection', 'american_gray'], ['Other', 'american_gray']]]
+      ],
+      cols: [
+        ['Who & what', 'Property · Buyer · Seller · Conveyancer · Agent'],
+        ['Money', 'Offer price · Sale price · Commission % (blank = 5%) · Commission (R), calculated'],
+        ['Dates', 'OTP signed · Condition deadline · Expected transfer · Registration date'],
+        ['Paperwork', 'FICA complete · Documents (OTP, FICA, proof of funds, bond approval) · Fell-through reason'],
+        ['Shown from other boards', 'Asking price · Area · Buyer phone · Seller phone'],
+        ['Follow-up', 'Next action · Next action date']
+      ],
+      views: ['Kanban by Stage', 'Table', 'Expected transfer calendar'],
+      links: ['<strong>Property</strong> → 🏡 Properties (shows as Sale stage)', '<strong>Buyer · Seller · Conveyancer</strong> → 📇 Contacts'],
+      warn: '<strong>Commission:</strong> Sale price × 5%, or the Commission % you type. In the demo, an R7,750,000 sale shows R387,500. VAT treatment and agent splits are still to confirm (Q-04).'
+    },
+    {
+      id: 'rentals', em: '🔑', name: 'Rental Pipeline', folder: '3 · Deals', short: 'Application → handover',
+      purpose: 'One row per tenancy, from application to handover. It follows your documented prospects process step for step, holds the signed lease (no copy needed on the property), and calculates commission on the lease term.',
+      item: '“8 Kingfisher Close – Naidoo”', board: '3',
+      groups: [['In progress', '#579bfc'], ['Handed over', '#00c875'], ['Declined / Withdrawn', '#df2f4a']],
+      st: [{
+        name: 'Stage', note: 'Your prospects process, as documented.', main: true,
+        rows: [
+          ['Application received', 'bright_blue', 'Connect Property, Tenant, Landlord, Agent. Fill in Monthly rental, Lease term and Deposit. Set the property to Under offer / Applying.', 'Commission (R) calculated'],
+          ['Vetting', 'purple', 'TPN report submitted; set TPN / credit, tick Employment confirmed and Landlord references.'],
+          ['Submitted to landlord', 'working_orange', 'Application with the landlord. Inclusions & extra costs must be filled in.'],
+          ['Approved', 'grass_green', 'The landlord said yes. Tenant to In transaction.'],
+          ['Lease out for signing', 'egg_yolk', 'Lease sent to the tenant, then the owner.'],
+          ['Lease signed', 'blackish', 'Upload it to Lease. Fill in Lease start and Lease end.'],
+          ['Invoice sent', 'river', 'Deposit and first month invoiced in your accounting tool. monday tracks it but doesn’t invoice.'],
+          ['Paid', 'bright_green', 'Rental and commission received. Nobody moves in before this.'],
+          ['Pre-occupation prep', 'sunset', 'Fill in Occupation date. Repairs, cleaning, HOA access, house manual.'],
+          ['Handed over', 'done_green', 'Keys handed over. Tenant to Completed.', 'Deal → Handed over · property → Sold / Let'],
+          ['Declined / Withdrawn', 'stuck_red', 'Note why in Next action. Tenant back to Qualified – searching.', 'Deal → Declined · property → Live']
+        ]
+      }],
+      sets: [
+        ['TPN / credit', '', [['Not done', 'american_gray'], ['Clear', 'done_green'], ['Concerns', 'stuck_red']]]
+      ],
+      cols: [
+        ['Who & what', 'Property · Tenant · Landlord · Agent'],
+        ['Money', 'Monthly rental · Lease term (months) · Deposit · Commission % (blank = 8%) · Commission (R), calculated'],
+        ['Dates', 'Lease start · Lease end · Occupation date'],
+        ['Vetting & paperwork', 'TPN / credit · Employment confirmed · Landlord references · Inclusions & extra costs · Lease · Documents'],
+        ['Shown from other boards', 'Asking rental · Area · Tenant phone · Tenant vetting · Landlord phone'],
+        ['Follow-up', 'Next action · Next action date']
+      ],
+      views: ['Kanban by Stage', 'Table', 'Occupation date calendar'],
+      links: ['<strong>Property</strong> → 🏡 Properties (shows as Rental stage)', '<strong>Tenant · Landlord</strong> → 📇 Contacts'],
+      warn: '<strong>Commission:</strong> Monthly rental × Lease term × 8%, our reading of “8% of the term”. To confirm, with VAT (Q-04). Lease-end renewal alerts at 90, 60 and 30 days come in Phase 2.'
+    },
+    {
+      id: 'dashboard', em: '📊', name: 'Team Dashboard', folder: 'Start here', short: 'One screen, every morning',
+      purpose: 'Where every day starts. One screen showing what’s new, what’s live and what’s next across all six boards. The full KPI dashboards and agent scorecards come in Phase 6; this is the basic reporting Phase 1 promised.',
+      item: '—', board: 'Counters · charts · calendar',
+      dashboard: true
+    }
+  ];
+
+  // ══ Board explorer ══
+  const bxList = document.getElementById('bxList');
+  const bxPanels = document.getElementById('bxPanels');
+  const explorer = document.getElementById('board-explorer');
+
+  function renderStatus(s) {
+    let h = '<div class="st-block' + (s.main ? ' main' : '') + '"><div class="st-title"><h4>' + s.name + '</h4>' +
+      (s.assume ? '<span class="assume">' + s.assume + '</span>' : '') + '</div>' +
+      '<p class="st-note">' + s.note + '</p><ul class="st-rows">';
+    s.rows.forEach(([label, color, meaning, auto, grp]) => {
+      h += '<li class="st-row">' + chip(label, color) + '<p>' + meaning +
+        (auto ? ' <span class="auto"><i data-lucide="zap" style="width:11px;height:11px;"></i>' + auto + '</span>' : '') +
+        (grp ? '<span class="grp">Group: ' + grp + '</span>' : '') + '</p></li>';
+    });
+    return h + '</ul></div>';
+  }
+
+  function renderDashboard() {
+    const widgets = [
+      ['Counter', 'hash', 'New enquiries', 'How many came in, from 📥 Enquiries.'],
+      ['Counter', 'coins', 'Commission in the pipeline', 'From both pipelines. Admin-only once column permissions are confirmed.'],
+      ['Chart', 'chart-column', 'Listings by stage', 'How many properties are winning, preparing, live or under offer.'],
+      ['Chart', 'chart-column', 'Sales by stage', 'Where every sale sits, from offer to registration.'],
+      ['Chart', 'chart-column', 'Rentals by stage', 'Where every tenancy sits, from application to handover.'],
+      ['Calendar', 'calendar-days', 'Viewings, follow-ups & mandate expiries', 'Everything with a date, in one calendar.']
+    ];
+    let h = '<div class="px-sub">What’s on it</div><div class="widget-grid">';
+    widgets.forEach(([type, icon, title, desc]) => {
+      h += '<div class="widget"><div class="w-type"><i data-lucide="' + icon + '" style="width:12px;height:12px;"></i>' + type + '</div><strong>' + title + '</strong><p>' + desc + '</p></div>';
+    });
+    h += '</div><div class="px-scope"><div class="px-block wide"><h4><i data-lucide="sunrise" style="width:16px;height:16px;"></i>The daily routine</h4><ol class="routine">' +
+      '<li>Open the 📊 Team Dashboard: what’s new, what’s live, what’s due.</li>' +
+      '<li>Work your list: 📇 Contacts › <strong>Follow-ups due (incl. overdue)</strong> and 📥 Enquiries › <strong>Open enquiries</strong>.</li>' +
+      '<li>After every call or viewing, update the stage, <strong>Next action</strong> and <strong>Next follow-up</strong>. That one habit drives the whole dashboard.</li>' +
+      '<li>Once a week: 🏡 <strong>Mandates expiring (30 days)</strong>, <strong>Stage check: Live without P24 link</strong>, 👁 <strong>Feedback outstanding</strong>.</li>' +
+      '</ol></div></div>';
+    return h;
+  }
+
+  BOARDS.forEach((b, i) => {
+    const tab = document.createElement('button');
+    tab.type = 'button';
+    tab.className = 'px-tab';
+    tab.setAttribute('role', 'tab');
+    tab.id = 'bxt-' + b.id;
+    tab.setAttribute('aria-controls', 'bx-' + b.id);
+    tab.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+    tab.tabIndex = i === 0 ? 0 : -1;
+    tab.dataset.board = b.id;
+    tab.innerHTML = '<span class="px-num">' + b.em + '</span><span><strong>' + b.name + '</strong><small>' + b.short + '</small></span>';
+    bxList.appendChild(tab);
+
+    const prev = BOARDS[i - 1], next = BOARDS[i + 1];
+    let body = '';
+    if (b.dashboard) {
+      body = renderDashboard();
+    } else {
+      body += '<div class="px-sub">Statuses &amp; what they mean</div>';
+      b.st.forEach((s) => { body += renderStatus(s); });
+      if (b.sets.length) {
+        body += '<div class="px-scope"><div class="px-block wide"><h4><i data-lucide="tags" style="width:16px;height:16px;"></i>Other label lists</h4>';
+        b.sets.forEach(([name, note, labels]) => {
+          body += '<div class="chip-set"><div class="cs-head">' + name + (note ? ' <span>· ' + note + '</span>' : '') + '</div><div class="chip-row">' +
+            labels.map(([l, c]) => chip(l, c)).join('') + '</div></div>';
+        });
+        body += '</div></div>';
+      }
+      body += '<div class="px-scope">' +
+        '<div class="px-block"><h4><i data-lucide="rows-3" style="width:16px;height:16px;"></i>Groups</h4><ul class="grp-list">' +
+        b.groups.map(([g, c]) => '<li><span class="gdot" style="background:' + c + '"></span>' + g + '</li>').join('') + '</ul></div>' +
+        '<div class="px-block"><h4><i data-lucide="link" style="width:16px;height:16px;"></i>Links to other boards</h4><ul class="fn-list">' +
+        b.links.map((l) => '<li>' + l + '</li>').join('') + '</ul></div>' +
+        '<div class="px-block wide"><h4><i data-lucide="columns-3" style="width:16px;height:16px;"></i>Columns</h4><div class="col-groups">' +
+        b.cols.map(([t, c]) => '<div><h5>' + t + '</h5><p>' + c + '</p></div>').join('') + '</div></div>' +
+        '<div class="px-block wide"><h4><i data-lucide="layout-list" style="width:16px;height:16px;"></i>Saved views</h4><div class="tag-row">' +
+        b.views.map((v) => '<span class="tag">' + v + '</span>').join('') + '</div></div>' +
+        '</div>';
+      if (b.warn) body += '<div class="px-warn"><i data-lucide="lightbulb" style="width:18px;height:18px;"></i><div>' + b.warn + '</div></div>';
+    }
+
+    const panel = document.createElement('article');
+    panel.className = 'px-panel';
+    panel.setAttribute('role', 'tabpanel');
+    panel.id = 'bx-' + b.id;
+    panel.setAttribute('aria-labelledby', 'bxt-' + b.id);
+    panel.dataset.board = b.id;
+    panel.hidden = i !== 0;
+    panel.innerHTML =
+      '<div class="px-head"><div class="px-head-top"><span class="label">' + (b.dashboard ? 'Dashboard' : 'Board ' + String(i + 1).padStart(2, '0')) + '</span>' +
+      '<span class="tag">' + b.folder + '</span></div>' +
+      '<h3>' + b.em + ' ' + b.name + '</h3><p class="px-obj">' + b.purpose + '</p>' +
+      '<div class="px-meta">' + (b.dashboard ? '' : '<div><b>' + b.item + '</b><span>Each row is named</span></div>') +
+      '<div><b>' + b.board + '</b><span>' + (b.dashboard ? 'Widgets' : 'Groups') + '</span></div></div></div>' +
+      '<div class="px-body">' + body + '</div>' +
+      '<div class="px-nav">' +
+      (prev ? '<button type="button" class="mini-btn" data-open-board="' + prev.id + '"><i data-lucide="arrow-left" style="width:14px;height:14px;"></i> ' + prev.name + '</button>' : '<span></span>') +
+      (next ? '<button type="button" class="mini-btn solid" data-open-board="' + next.id + '">' + next.name + ' <i data-lucide="arrow-right" style="width:14px;height:14px;"></i></button>' : '<span></span>') +
+      '</div>';
+    bxPanels.appendChild(panel);
+  });
+
+  const bxTabs = [...bxList.querySelectorAll('.px-tab')];
+  const bxPanelEls = [...bxPanels.querySelectorAll('.px-panel')];
+
+  function replay(el) {
+    el.classList.remove('anim');
+    void el.offsetWidth;
+    el.classList.add('anim');
+  }
+
+  // keep a selected item visible inside a horizontally scrolling strip
+  function centreInStrip(strip, item) {
+    if (strip.scrollWidth <= strip.clientWidth) return;
+    const left = item.getBoundingClientRect().left - strip.getBoundingClientRect().left + strip.scrollLeft;
+    strip.scrollTo({ left: left - (strip.clientWidth - item.offsetWidth) / 2, behavior: 'smooth' });
+  }
+
+  function selectBoard(id) {
+    bxTabs.forEach((t) => {
+      const on = t.dataset.board === id;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    bxPanelEls.forEach((p) => { p.hidden = p.dataset.board !== id; });
+    const panel = bxPanelEls.find((p) => p.dataset.board === id);
+    if (panel) replay(panel);
+    const tab = bxTabs.find((t) => t.dataset.board === id);
+    if (tab) centreInStrip(bxList, tab);
+    history.replaceState(null, '', '#board-' + id);
+  }
+
+  function openBoard(id) {
+    selectBoard(id);
+    explorer.classList.add('visible');
+    explorer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  bxTabs.forEach((t) => t.addEventListener('click', () => selectBoard(t.dataset.board)));
+
+  // ── Arrow-key navigation for tab lists ──
+  function arrowNav(list, tabs, onSelect) {
+    list.addEventListener('keydown', (e) => {
+      const keys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+      if (!keys.includes(e.key)) return;
+      const i = tabs.indexOf(document.activeElement);
+      if (i < 0) return;
+      e.preventDefault();
+      let j;
+      if (e.key === 'Home') j = 0;
+      else if (e.key === 'End') j = tabs.length - 1;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') j = (i - 1 + tabs.length) % tabs.length;
+      else j = (i + 1) % tabs.length;
+      tabs[j].focus();
+      onSelect(tabs[j]);
+    });
+  }
+  arrowNav(bxList, bxTabs, (t) => selectBoard(t.dataset.board));
+
+  // anything carrying data-open-board (workspace tiles, diagram nodes, walkthrough tags, prev/next) jumps to that board
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-open-board]');
+    if (!trigger) return;
+    e.preventDefault();
+    if (trigger.closest('.px-nav')) selectBoard(trigger.dataset.openBoard);
+    else openBoard(trigger.dataset.openBoard);
+  });
+  document.querySelectorAll('.a-node').forEach((n) => n.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openBoard(n.dataset.openBoard); }
+  }));
+
+  const hashBoard = location.hash.match(/^#board-([a-z]+)$/);
+  if (hashBoard && BOARDS.some((b) => b.id === hashBoard[1])) {
+    selectBoard(hashBoard[1]);
+    explorer.classList.add('visible');
+    setTimeout(() => explorer.scrollIntoView({ block: 'start' }), 60);
+  }
+
+  // ══ Walkthrough ══
+  const STEPS = [
+    { s: 'Owner enquiry', t: 'The van der Merwes ask for a valuation',
+      team: 'Pieter & Anke van der Merwe want to sell 12 Augrabies Falls Blvd. The agent adds them to Contacts as owners and creates the property, or they fill in the owner questionnaire and it’s created for them.',
+      sys: ['Listing stage Owner enquiry, in Winning the mandate', 'Owner phone and email appear on the property', 'The property appears on both owners’ Properties owned'],
+      boards: ['properties', 'contacts'] },
+    { s: 'Mandate signed', t: 'Market analysis and a sole mandate',
+      team: 'CMA presented at R7,800,000. Mandate prepared and signed: sole, 15 August to 15 November. The agent types the expiry from the signed mandate.',
+      sys: ['Mandate start stamped with today’s date', 'Mandate days left starts counting down', 'Shows in Mandates expiring once it’s inside 30 days'],
+      boards: ['properties'] },
+    { s: 'Listing prep', t: 'Getting it ready to market',
+      team: 'Photos taken, specs and features captured, and the write-up sent to the owners, who approve it.',
+      sys: ['Moves to Preparing to list', 'Marketing readiness tracks photos booked → media received → write-up approved', 'Features use the same list buyers choose their non-negotiables from'],
+      boards: ['properties'] },
+    { s: 'Live', t: 'Published',
+      team: 'Listed on Property24 and the website. The agent pastes both links and ticks FNB app.',
+      sys: ['Moves to Live', 'Appears in Match a buyer / tenant', 'If the Property24 link were missing, it would show in Stage check: Live without P24 link'],
+      boards: ['properties'] },
+    { s: 'Enquiry', t: 'Thabo Mokoena enquires via Property24',
+      team: 'The agent logs the enquiry, calls him, and sets Questionnaire sent. Once his answers are in, the agent reviews them and marks the enquiry Qualified.',
+      sys: ['Status New enquiry and the agent is notified', 'The buyer questionnaire is emailed to him automatically', 'His contact is created with budget, areas and non-negotiables, Search stage Qualifying', 'The enquiry moves to Converted to contact and shows on the property'],
+      boards: ['enquiries', 'contacts'] },
+    { s: 'Viewing', t: 'Viewing on 10 October',
+      team: 'Viewing booked under his name. Afterwards: Done, Interest Hot, feedback “Loved the kitchen…”. Shared with the owners on 12 October.',
+      sys: ['The agent is asked for feedback the moment it’s marked Done', 'The property’s Viewings list and Last viewing update', 'Until feedback is added it sits in Feedback outstanding'],
+      boards: ['viewings', 'properties'] },
+    { s: 'Offer & OTP', t: 'Offer, OTP and conditions',
+      team: 'Offer of R7,600,000, OTP signed at R7,750,000, bond condition due 8 November. The agent creates the deal and sets the property to Under offer / Applying.',
+      sys: ['Commission calculated: R387,500', 'Asking price, area, buyer and seller phones shown on the deal', 'The property’s Sale stage shows Conditions pending'],
+      boards: ['sales', 'properties'] },
+    { s: 'Registered', t: 'Registration and commission',
+      team: 'Bond approved, transfer lodged, registered. The agent fills in the registration date and marks Thabo Completed. Commission received.',
+      sys: ['Deal moves to Registered', 'The property is set to Sold / Let and moves group by itself', 'The registration date is kept for the Phase 2 “happy registration day” message'],
+      boards: ['sales', 'properties', 'contacts'] }
+  ];
+
+  const wtTrack = document.getElementById('wtTrack');
+  const wtTrackWrap = wtTrack.parentElement;
+  const wtBody = document.getElementById('wtBody');
+  const wtPrev = document.getElementById('wtPrev');
+  const wtNext = document.getElementById('wtNext');
+  const wtNextLabel = document.getElementById('wtNextLabel');
+  const boardName = Object.fromEntries(BOARDS.map((b) => [b.id, b.em + ' ' + b.name]));
+  let step = 0;
+
+  STEPS.forEach((st, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'wt-step-btn';
+    b.innerHTML = '<span class="wt-dot">' + (i + 1) + '</span><span class="wt-label">' + st.s + '</span>';
+    b.addEventListener('click', () => showStep(i));
+    wtTrack.appendChild(b);
+  });
+
+  function showStep(i) {
+    step = i;
+    const st = STEPS[i];
+    [...wtTrack.children].forEach((b, j) => {
+      b.classList.toggle('active', j === i);
+      b.classList.toggle('done', j < i);
+      if (j === i) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+    });
+    document.getElementById('wtCount').textContent = 'Step ' + (i + 1) + ' of ' + STEPS.length;
+    document.getElementById('wtTitle').textContent = st.t;
+    document.getElementById('wtTeam').textContent = st.team;
+    document.getElementById('wtSys').innerHTML = st.sys.map((x) => '<li>' + x + '</li>').join('');
+    document.getElementById('wtBoards').innerHTML = 'On: ' + st.boards.map((id) => '<button type="button" class="bd-tag" data-open-board="' + id + '">' + boardName[id] + '</button>').join('');
+    wtPrev.disabled = i === 0;
+    wtNext.disabled = i === STEPS.length - 1;
+    wtNextLabel.textContent = i === STEPS.length - 1 ? 'Done' : 'Next step';
+    centreInStrip(wtTrackWrap, wtTrack.children[i]);
+    replay(wtBody);
+  }
+  wtPrev.addEventListener('click', () => step > 0 && showStep(step - 1));
+  wtNext.addEventListener('click', () => step < STEPS.length - 1 && showStep(step + 1));
+  showStep(0);
+
+  // ══ Automations ══
+  const AUTOS = [
+    ['📥 Enquiries', 'A new enquiry is added, by hand or from the website form', 'Status = <b>New enquiry</b> and the agent is notified'],
+    ['📥 Enquiries', 'Status → <b>Questionnaire sent</b>', 'Emails the buyer/renter form (Buy, Rent) or the owner questionnaire (Sell, Let)'],
+    ['📥 Enquiries', 'Status → <b>Qualified</b>', 'Moves to <b>Converted to contact</b>'],
+    ['📥 Enquiries', 'Status → <b>Unqualified</b>', 'Moves to <b>Not proceeding</b>'],
+    ['📇 Contacts', 'A buyer/renter questionnaire is submitted', 'Contact created in Active buyers &amp; tenants, Search stage = <b>Qualifying</b>, agent notified'],
+    ['📇 Contacts', 'Search stage → <b>Lost</b>', 'Moves to <b>Closed / inactive</b>'],
+    ['🏡 Properties', 'An owner questionnaire is submitted', 'Property created in Winning the mandate, Listing stage = <b>Owner enquiry</b>, agent notified'],
+    ['🏡 Properties', 'Listing stage changes', 'Property moves to the <b>matching group</b>'],
+    ['🏡 Properties', 'Listing stage → <b>Mandate signed</b>', '<b>Mandate start</b> = today'],
+    ['👁 Viewings', 'Status → <b>Done</b>', 'Agent notified to add the client’s feedback while it’s fresh'],
+    ['💰 → 🏡', 'Sales stage → <b>Registered</b>', 'Deal to Registered · property → <b>Sold / Let</b>', true],
+    ['💰 → 🏡', 'Sales stage → <b>Fell through</b>', 'Deal to Fell through · property back to <b>Live</b>', true],
+    ['🔑 → 🏡', 'Rental stage → <b>Handed over</b>', 'Deal to Handed over · property → <b>Sold / Let</b>', true],
+    ['🔑 → 🏡', 'Rental stage → <b>Declined / Withdrawn</b>', 'Deal to Declined · property back to <b>Live</b>', true]
+  ];
+  document.getElementById('autoList').innerHTML = AUTOS.map(([board, when, then, cross]) =>
+    '<div class="auto-row fade-in' + (cross ? ' cross' : '') + '"><div class="a-board">' + board + '</div>' +
+    '<div class="a-when"><span class="auto-k">When</span>' + when + '</div>' +
+    '<div class="a-arrow"><i data-lucide="arrow-right" style="width:16px;height:16px;"></i></div>' +
+    '<div class="a-then"><span class="auto-k">Then</span>' + then + '</div></div>').join('');
+
+  // ══ Open questions ══
+  const THEMES = [
+    ['users', 'People & access', [
+      ['Q-01', 'Who are the three users, what are their roles, and who is the admin?', 'Permissions, the Agent columns and who we train.'],
+      ['Q-02', 'Does every property and client have one responsible agent, or do you co-list?', 'Whether Agent holds one person or several, which affects agent reporting later.'],
+      ['Q-13', 'Who should see commission figures and alarm / access codes?', 'Which columns we restrict to the admin.']
+    ]],
+    ['route', 'How you work', [
+      ['Q-03', 'We added a separate Enquiries inbox in front of Contacts. Happy to keep it?', 'It keeps Contacts to real prospects and keeps every enquiry for source and conversion reporting. The original design had no inbox.', true],
+      ['Q-05', 'What happens on the sales side after an offer? Are these the right stages: Offer → OTP → Conditions → Bond / guarantees → Transfer → Registered → Commission? Which conveyancers do you usually use?', 'Your sales process isn’t documented yet, so the Sales Pipeline stages are our assumption.'],
+      ['Q-06', 'Do buyers need proof of funds or a bond pre-approval before viewings, the way tenants need vetting?', 'Whether Buyer finance stays or becomes a hard step.'],
+      ['Q-08', 'What’s the rule behind “sole mandate, especially if unfurnished”? Is every mandate exactly 3 months?', 'Mandate defaults and when Open is allowed.'],
+      ['Q-09', 'Do you also manage rentals after placement (rent collection, maintenance)? In which tool, e.g. PayProp?', 'Where the system’s job ends; possible Phase 7 integration.'],
+      ['Q-16', 'Is setting the property to Under offer / Applying by hand, when you create a deal, OK for now?', 'monday can’t do it reliably, because a deal often exists before the property is linked.', true]
+    ]],
+    ['coins', 'Money', [
+      ['Q-04', 'Rental commission “8% of the term”: is that 8% of monthly rental × lease months? Including or excluding VAT? Is the 5% on sales including or excluding VAT? Any agent splits?', 'The commission formulas on both pipelines.']
+    ]],
+    ['list-checks', 'Your lists & data', [
+      ['Q-07', 'Which areas and estates do you work in? And does the features list (solar, backup water, staff accommodation and so on) match how you describe homes?', 'These shared lists are what make buyer–property matching work.'],
+      ['Q-12', 'Can you share 2–3 sample properties, owners, buyers or tenants and one live deal? Anonymised is fine.', 'We test the rebuild against your real situations, not just ours.'],
+      ['Q-14', 'Roughly how many enquiries, viewings and new listings in a typical month?', 'Automation usage and dashboard sizing.']
+    ]],
+    ['plug-zap', 'Tools & next phases', [
+      ['Q-11', 'Which email do you use: Gmail or Outlook?', 'The questionnaire emails already send from the system; Phase 2 adds more email.'],
+      ['Q-10', 'What is Sims (Waterfall), and do you have Lightstone access?', 'Whether automated CMA and Sims loading are feasible in Phase 7.'],
+      ['Q-15', 'Is the measurable-items list (PropCon, PayProp, Power BI) a wish list for Phase 6, or are you still considering those tools?', 'So we don’t build in two directions.'],
+      ['Q-17', 'We put your three questionnaires online early. Do you want to keep them now?', 'They’re Phase 3 work done ahead of time. If you keep them, we agree how that time is counted.', true]
+    ]]
+  ];
+
+  const STORE = 'tim-phase1-discussed';
+  let discussed = new Set();
+  try { discussed = new Set(JSON.parse(localStorage.getItem(STORE) || '[]')); } catch (e) { /* storage unavailable */ }
+  function save() { try { localStorage.setItem(STORE, JSON.stringify([...discussed])); } catch (e) { /* storage unavailable */ } }
+
+  const qThemes = document.getElementById('qThemes');
+  let total = 0;
+  qThemes.innerHTML = THEMES.map(([icon, title, qs]) => {
+    total += qs.length;
+    return '<div class="q-theme fade-in"><div class="q-theme-head"><i data-lucide="' + icon + '" style="width:18px;height:18px;"></i>' + title + '</div><div class="q-grid">' +
+      qs.map(([id, q, why, isNew]) =>
+        '<div class="q-card' + (isNew ? ' new' : '') + '" data-q="' + id + '"><div class="q-body"><div class="q-id"><code>' + id + '</code>' + (isNew ? '<span class="q-flag">New</span>' : '') + '</div>' +
+        '<h3>' + q + '</h3><p class="why"><b>Why it matters:</b> ' + why + '</p></div>' +
+        '<button type="button" class="q-toggle" aria-pressed="false"><span class="box"><i data-lucide="check"></i></span><span class="t">Mark as discussed</span></button></div>'
+      ).join('') + '</div></div>';
+  }).join('');
+  document.getElementById('qTotal').textContent = total;
+
+  function refreshQ() {
+    qThemes.querySelectorAll('.q-card').forEach((c) => {
+      const on = discussed.has(c.dataset.q);
+      c.classList.toggle('discussed', on);
+      const btn = c.querySelector('.q-toggle');
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      btn.querySelector('.t').textContent = on ? 'Discussed' : 'Mark as discussed';
+    });
+    document.getElementById('qDone').textContent = discussed.size;
+    document.getElementById('qBar').style.width = (total ? discussed.size / total * 100 : 0) + '%';
+  }
+  qThemes.addEventListener('click', (e) => {
+    const btn = e.target.closest('.q-toggle');
+    if (!btn) return;
+    const id = btn.closest('.q-card').dataset.q;
+    if (discussed.has(id)) discussed.delete(id); else discussed.add(id);
+    save();
+    refreshQ();
+  });
+  document.getElementById('qReset').addEventListener('click', () => { discussed.clear(); save(); refreshQ(); });
+  refreshQ();
+
+  // ── Lucide icons (after dynamic content is in) ──
+  if (window.lucide) lucide.createIcons();
+
+  // ── Intersection Observer for fade-in ──
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    },
+    { threshold: 0.12 }
+  );
+  document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+
+  // ── Nav active link highlight ──
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const navObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          navLinks.forEach((a) => {
+            a.style.color = a.getAttribute('href') === '#' + entry.target.id ? '#ffffff' : '';
+          });
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+  document.querySelectorAll('section[id]').forEach((s) => navObserver.observe(s));
+
+  // ── Scroll progress ──
+  const progress = document.getElementById('progress');
+  function updateProgress() {
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - doc.clientHeight;
+    progress.style.transform = 'scaleX(' + (max > 0 ? doc.scrollTop / max : 0) + ')';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+</script>
+</body>
+</html>
